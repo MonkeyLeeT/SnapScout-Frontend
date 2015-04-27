@@ -1,0 +1,41 @@
+html {height:100%; width:100%; overflow: hidden;margin:0; padding:0; }
+body {
+    height:100%; width:100%;margin:0; padding:0;
+}
+#index_grid {height:100%;}
+#left_column, #right_column {height: 100%}
+#map_canvas { height: 95%; }
+#right_content {
+    height: 80%;
+    overflow: auto;
+    overflow-x:hidden;
+}
+#comments {
+    height: 350px;
+    overflow: auto;
+    overflow-x:hidden;
+}
+
+#detail_img_loader {
+    display: none;
+}
+
+#detail_img_loader_2 {
+    display: none;
+}
+
+.detail_img_similar_pic {
+    cursor: pointer;
+}
+
+.photo {
+    cursor: pointer;
+}
+
+.img_overlay {
+    cursor: pointer;
+}
+
+#recommendation_loading {
+    height: 400px;
+}
