@@ -8,7 +8,7 @@
     <link href="static/timeline.css" rel="stylesheet">
     <link href="static/custom.css" rel="stylesheet">
     <link rel="shortcut icon" href="static/image/favicon.ico" />
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
+    <script type="text/javascript" src="static/jquery.min.js"></script>
     <script type="text/javascript" src="static/semantic.min.js"></script>
     <script type="text/javascript" src="static/perfect-scrollbar.min.js"></script>
     <script type="text/javascript">
@@ -107,15 +107,15 @@
     <script type="text/javascript" src="static/timeline.js"></script>
 </head>
 <body>
-<div class="ui inverted red menu">
+<div class="ui inverted teal menu">
     <a class="{% if index %}active{% endif %} item" href="/">
         <i class="home icon"></i> Home
     </a>
     <a class="{% if recommendation %}active{% endif %}item" href="recommendation">
-        <i class="checkmark box icon"></i> Recommendations
+        <i class="thumbs up icon"></i> Trending brands
     </a>
     <a class="{% if place %}active {% endif %}item" href="place">
-        <i class="plane icon"></i> Plan My Trip
+        <i class="shop icon"></i> Find discounts
     </a>
     <a class="item" href="static/snapscout.apk">
         <i class="download icon"></i> Download iOS Client

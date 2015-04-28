@@ -1,9 +1,5 @@
 {% include "head.html" %}
-<div class="ui grid" id="index_grid">
-    <div class="nine wide column" id="left_column">
-        <div id="map_canvas"></div>
-    </div>
-
+<div class="ui grid centered" id="index_grid">
     <div class="seven wide column" id="right_column">
         <div class="ui blue menu" id="right_column_menu">
             <div class="item">
@@ -97,14 +93,15 @@
             doSearch("Central Park")
         }
 
-        initialize();
+        //initialize();
 
 
         $('.season').click(function () {
             $('.season').removeClass("active");
             $(this).addClass("active");
-            var bounds = map.getBounds();
-            loadPhoto(bounds);
+            console.log(1);
+            //var bounds = map.getBounds();
+            //loadPhoto(bounds);
         });
 
 
