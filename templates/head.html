@@ -3,14 +3,15 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Snap Scout</title>
-    <link href="static/semantic.min.css" rel="stylesheet">
-    <link href="static/perfect-scrollbar.min.css" rel="stylesheet">
-    <link href="static/timeline.css" rel="stylesheet">
-    <link href="static/custom.css" rel="stylesheet">
-    <link rel="shortcut icon" href="static/image/favicon.ico" />
-    <script type="text/javascript" src="static/jquery.min.js"></script>
-    <script type="text/javascript" src="static/semantic.min.js"></script>
-    <script type="text/javascript" src="static/perfect-scrollbar.min.js"></script>
+    {% load staticfiles %}
+    <link href="{% static "semantic.min.css" %}" rel="stylesheet">
+    <link href="{% static "perfect-scrollbar.min.css" %}" rel="stylesheet">
+    <link href="{% static "timeline.css" %}" rel="stylesheet">
+    <link href="{% static "custom.css" %}" rel="stylesheet">
+    <link href="{% static "image/favicon.ico" %}" rel="shortcut icon">
+    <script type="text/javascript" src="{% static "jquery.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "semantic.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "perfect-scrollbar.min.js" %}"></script>
     <script type="text/javascript">
         var firstTimeRate = false;
         var opendialog = false;
@@ -29,14 +30,14 @@
                 },
                 success: function (data) {
                     $('#detail_img_src').attr('src', data.url);
-                    $('#detail_img_similar_0').attr('src', data.similarPhotos[0].url);
-                    $('#detail_img_similar_1').attr('src', data.similarPhotos[1].url);
-                    $('#detail_img_similar_2').attr('src', data.similarPhotos[2].url);
-                    $('#detail_img_similar_3').attr('src', data.similarPhotos[3].url);
-                    $('#detail_img_similar_0').attr('photoid', data.similarPhotos[0].photoId);
-                    $('#detail_img_similar_1').attr('photoid', data.similarPhotos[1].photoId);
-                    $('#detail_img_similar_2').attr('photoid', data.similarPhotos[2].photoId);
-                    $('#detail_img_similar_3').attr('photoid', data.similarPhotos[3].photoId);
+                    //$('#detail_img_similar_0').attr('src', data.similarPhotos[0].url);
+                    //$('#detail_img_similar_1').attr('src', data.similarPhotos[1].url);
+                    //$('#detail_img_similar_2').attr('src', data.similarPhotos[2].url);
+                    //$('#detail_img_similar_3').attr('src', data.similarPhotos[3].url);
+                    //$('#detail_img_similar_0').attr('photoid', data.similarPhotos[0].photoId);
+                    //$('#detail_img_similar_1').attr('photoid', data.similarPhotos[1].photoId);
+                    //$('#detail_img_similar_2').attr('photoid', data.similarPhotos[2].photoId);
+                    //$('#detail_img_similar_3').attr('photoid', data.similarPhotos[3].photoId);
                     $('#detail_img_description').html(data.content);
                     $('#comment_text').val('');
                     $('#comment_img_id').val(id);
@@ -104,7 +105,7 @@
                             }
         }
     </script>
-    <script type="text/javascript" src="static/timeline.js"></script>
+    <script type="text/javascript" src="{%  static "timeline.js" %}"></script>
 </head>
 <body>
 <div class="ui inverted teal menu">
@@ -117,7 +118,7 @@
     <a class="{% if place %}active {% endif %}item" href="place">
         <i class="shop icon"></i> Find discounts
     </a>
-    <a class="item" href="static/snapscout.apk">
+    <a class="item" href=" {% static "footprint.apk" %}">
         <i class="download icon"></i> Download iOS Client
     </a>
 
