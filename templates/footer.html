@@ -15,14 +15,17 @@
                     <label>Email</label>
                     <input type="email" name="email" id="signup_email">
                 </div>
+                                <div class="field">
+                    <label>Username</label>
+                    <input type="text" name="username" id="signup_username">
+                </div>
                 <div class="field">
                     <label>Password</label>
                     <input type="password" name="password" id="signup_password">
                 </div>
-
                 <div class="field">
-                    <label>Nick name</label>
-                    <input type="text" name="nickname" id="signup_nickname">
+                    <label>Confirm Password</label>
+                    <input type="password" name="confirm_password" id="signup_confirm_password">
                 </div>
             </div>
         </div>
@@ -33,7 +36,7 @@
             Sign up!
             <i class="edit icon"></i>
         </div>
-        <div class="ui black button">
+        <div class="ui button">
             Close
         </div>
     </div>
@@ -84,9 +87,6 @@
             <div class="ui mini text loader">Loading</div>
         </div>
     </div>
-    <!--<div class="header">-->
-    <!--Sign in with your email and password-->
-    <!--</div>-->
     <div class="content">
         <div class="ui grid">
 
@@ -177,11 +177,6 @@
             </div>
         </div>
     </div>
-    <!--<div class="actions">-->
-    <!--<div class="ui black button">-->
-    <!--Close-->
-    <!--</div>-->
-    <!--</div>-->
 
 </div>
 
@@ -305,6 +300,15 @@
                         }
                     ]
                 },
+                confirm_password: {
+                    identifier: 'confirm_password',
+                    rules: [
+                        {
+                            type: 'match[password]',
+                            prompt: 'Your password does not match'
+                        }
+                    ]
+                },
                 nickname: {
                     identifier: 'nickname',
                     rules: [
@@ -318,7 +322,8 @@
                 onSuccess: function () {
                     var email = $('#signup_email').val();
                     var password = $('#signup_password').val();
-                    var nickname = $('#signup_nickname').val();
+                    var confirm_pw = $('confirm_password').val();
+                    var username = $('#signup_username').val();
                     var token = $('input[name=csrfmiddlewaretoken]').val();
                     $.ajax({
                         type: 'POST',
@@ -326,7 +331,8 @@
                         data: {
                             'email': email,
                             'password': password,
-                            'nickname': nickname,
+                            'confirm_password':confirm_pw,
+                            'username': username,
                             'csrfmiddlewaretoken': token
                         },
                         success: function (response) {
@@ -416,7 +422,6 @@
                 $('#detail_img_description').html(data.content);
                 $('#comment_text').val('');
                 $('#comment_img_id').val(id);
-                //console.log(data);
                 $('#detail_img_rating').html('<div class="ui star rating" id="' + id + '"></div>');
                 $('#detail_img_avg_rating').html(data.avgRank);
                 $('.ui.rating')

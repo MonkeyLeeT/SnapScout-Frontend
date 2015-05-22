@@ -17,102 +17,102 @@
         var opendialog = false;
         function showPicture(id) {
             if (opendialog == false) {
-            opendialog = true;
+                opendialog = true;
 
-            $.ajax({
-                type: 'GET',
-                url: 'getSinglePhoto',
-                beforeSend: function () {
-                    $('#detail_img_loader').show();
-                },
-                data: {
-                    'photoId': id
-                },
-                success: function (data) {
-                    $('#detail_img_src').attr('src', data.url);
-                    //$('#detail_img_similar_0').attr('src', data.similarPhotos[0].url);
-                    //$('#detail_img_similar_1').attr('src', data.similarPhotos[1].url);
-                    //$('#detail_img_similar_2').attr('src', data.similarPhotos[2].url);
-                    //$('#detail_img_similar_3').attr('src', data.similarPhotos[3].url);
-                    //$('#detail_img_similar_0').attr('photoid', data.similarPhotos[0].photoId);
-                    //$('#detail_img_similar_1').attr('photoid', data.similarPhotos[1].photoId);
-                    //$('#detail_img_similar_2').attr('photoid', data.similarPhotos[2].photoId);
-                    //$('#detail_img_similar_3').attr('photoid', data.similarPhotos[3].photoId);
-                    $('#detail_img_description').html(data.content);
-                    $('#comment_text').val('');
-                    $('#comment_img_id').val(id);
-                    //console.log(data);
-                    $('#detail_img_rating').html('<div class="ui star rating" id="' + id + '"></div>');
-                    $('#detail_img_avg_rating').html(data.avgRank);
-                    firstTimeRate = false;
-                    $('.ui.rating')
-                            .rating({
-                                initialRating: data.rating,
-                                maxRating: 5,
-                                onRate: function (value) {
-                                    if (firstTimeRate == false && data.rating != 0)
-                                        firstTimeRate = true;
-                                    else {
-                                        var photoId = $(this).attr('id');
-                                        var token = $('input[name=csrfmiddlewaretoken]').val();
-                                        $.ajax({
-                                            type: 'POST',
-                                            url: 'postRating',
-                                            data: {
-                                                'rating': value,
-                                                'photoId': photoId,
-                                                'csrfmiddlewaretoken': token
-                                            },
-                                            success: function (response) {
-                                                if (response['success']) {
+                $.ajax({
+                    type: 'GET',
+                    url: 'getSinglePhoto',
+                    beforeSend: function () {
+                        $('#detail_img_loader').show();
+                    },
+                    data: {
+                        'photoId': id
+                    },
+                    success: function (data) {
+                        $('#detail_img_src').attr('src', data.url);
+                        //$('#detail_img_similar_0').attr('src', data.similarPhotos[0].url);
+                        //$('#detail_img_similar_1').attr('src', data.similarPhotos[1].url);
+                        //$('#detail_img_similar_2').attr('src', data.similarPhotos[2].url);
+                        //$('#detail_img_similar_3').attr('src', data.similarPhotos[3].url);
+                        //$('#detail_img_similar_0').attr('photoid', data.similarPhotos[0].photoId);
+                        //$('#detail_img_similar_1').attr('photoid', data.similarPhotos[1].photoId);
+                        //$('#detail_img_similar_2').attr('photoid', data.similarPhotos[2].photoId);
+                        //$('#detail_img_similar_3').attr('photoid', data.similarPhotos[3].photoId);
+                        $('#detail_img_description').html(data.content);
+                        $('#comment_text').val('');
+                        $('#comment_img_id').val(id);
+                        //console.log(data);
+                        $('#detail_img_rating').html('<div class="ui star rating" id="' + id + '"></div>');
+                        $('#detail_img_avg_rating').html(data.avgRank);
+                        firstTimeRate = false;
+                        $('.ui.rating')
+                                .rating({
+                                    initialRating: data.rating,
+                                    maxRating: 5,
+                                    onRate: function (value) {
+                                        if (firstTimeRate == false && data.rating != 0)
+                                            firstTimeRate = true;
+                                        else {
+                                            var photoId = $(this).attr('id');
+                                            var token = $('input[name=csrfmiddlewaretoken]').val();
+                                            $.ajax({
+                                                type: 'POST',
+                                                url: 'postRating',
+                                                data: {
+                                                    'rating': value,
+                                                    'photoId': photoId,
+                                                    'csrfmiddlewaretoken': token
+                                                },
+                                                success: function (response) {
+                                                    if (response['success']) {
 
-                                                } else {
-                                                    alert(response.error);
-                                                }
-                                            },
-                                            error: function (err) {
-                                                console.log(err);
-                                            },
-                                            dataType: 'json'
-                                        });
+                                                    } else {
+                                                        alert(response.error);
+                                                    }
+                                                },
+                                                error: function (err) {
+                                                    console.log(err);
+                                                },
+                                                dataType: 'json'
+                                            });
+                                        }
+
                                     }
-
-                                }
-                            });
-                    var comments = data.comments;
-                    var comment_html = "No comment. Be the first one!";
-                    if (comments.length > 0) {
-                        comment_html = "";
-                        for (var i = 0; i < comments.length; i++) {
-                            var comment = comments[i];
-                            var one_comment = '<div class="comment"> <a class="avatar"><img src="static/image/footprint.png"></a><div class="content"><a class="author">';
-                            one_comment += comment.title + '</a><div class="metadata"><span class="date">';
-                            one_comment += comment.date + '</span></div><div class="text">'
-                            one_comment += comment.content + '</div></div></div>';
-                            comment_html += one_comment;
-                        }
-                    }
-                    $('#detail_img_comments').html(comment_html);
-                    $('#modal_picture').modal('show');
-                    $('#detail_img_loader').hide();
-                    opendialog = false;
-                },
-                error: function (err) {
-                    console.log(err);
-                },
-                dataType: 'json'
-            });
+                                });
+                        var comments = data.comments;
+                        var comment_html = "No comment. Be the first one!";
+                        if (comments.length > 0) {
+                            comment_html = "";
+                            for (var i = 0; i < comments.length; i++) {
+                                var comment = comments[i];
+                                var one_comment = '<div class="comment"> <a class="avatar"><img src="static/image/footprint.png"></a><div class="content"><a class="author">';
+                                one_comment += comment.title + '</a><div class="metadata"><span class="date">';
+                                one_comment += comment.date + '</span></div><div class="text">'
+                                one_comment += comment.content + '</div></div></div>';
+                                comment_html += one_comment;
                             }
+                        }
+                        $('#detail_img_comments').html(comment_html);
+                        $('#modal_picture').modal('show');
+                        $('#detail_img_loader').hide();
+                        opendialog = false;
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    },
+                    dataType: 'json'
+                });
+            }
         }
     </script>
-    <script type="text/javascript" src="{%  static "timeline.js" %}"></script>
+    <script type="text/javascript" src="{% static "timeline.js" %}"></script>
 </head>
 <body>
-<div class="ui inverted teal menu">
+<div class="ui inverted pink menu">
     <a class="{% if index %}active{% endif %} item" href="/">
         <i class="home icon"></i> Home
     </a>
-    <a class="{% if recommendation %}active{% endif %}item" href="recommendation">
+    <a class="{% if recommendation %}active{% endif %} item" href="recommendation">
         <i class="thumbs up icon"></i> Trending brands
     </a>
     <a class="{% if place %}active {% endif %}item" href="place">
@@ -125,19 +125,33 @@
 
     <div class="right menu">
         {% if login %}
-        <div class="item">
-            Welcome, {{ info.nickName }}!
-        </div>
-        <div class="item">
-            <div class="ui red button" id="btn_logout">Log out</div>
-        </div>
+            <div class="item">
+                Welcome, {{ info.nickName }}!
+            </div>
+            <div class="item">
+                <div class="ui red button" id="btn_logout">Log out</div>
+            </div>
         {% else %}
-        <div class="item">
-            <div class="ui inverted primary button" id="btn_signup">Sign up</div>
-        </div>
-        <div class="item">
-            <div class="ui green button" id="btn_signin">Sign in</div>
-        </div>
+            <div class="item">
+                <div class="ui buttons">
+                    <div class="ui green button" id="btn_signup">Sign up</div>
+                    <div class="or"></div>
+                    <div class="ui primary button" id="btn_signin">Sign in</div>
+                </div>
+            </div>
+
         {% endif %}
+        <div class="ui circular facebook icon button">
+            <i class="facebook icon"></i>
+        </div>
+        <div class="ui circular twitter icon button">
+            <i class="twitter icon"></i>
+        </div>
+        <div class="ui circular linkedin icon button">
+            <i class="linkedin icon"></i>
+        </div>
+        <div class="ui circular google plus icon button">
+            <i class="google plus icon"></i>
+        </div>
     </div>
 </div>

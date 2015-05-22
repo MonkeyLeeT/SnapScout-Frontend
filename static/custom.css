@@ -1,19 +1,33 @@
-html {height:100%; width:100%; overflow: hidden;margin:0; padding:0; }
 body {
-    height:100%; width:100%;margin:0; padding:0;
+    background-image: url("image/background.jpg");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
-#index_grid {height:100%;}
-#left_column, #right_column {height: 100%}
-#map_canvas { height: 95%; }
+
+#index_grid {
+    height: 100%;
+}
+
+#left_column, #right_column {
+    height: 100%
+}
+
+#map_canvas {
+    height: 95%;
+}
+
 #right_content {
     height: 80%;
     overflow: auto;
-    overflow-x:hidden;
+    overflow-x: hidden;
 }
+
 #comments {
     height: 350px;
     overflow: auto;
-    overflow-x:hidden;
+    overflow-x: hidden;
 }
 
 #detail_img_loader {
@@ -39,3 +53,4 @@ body {
 #recommendation_loading {
     height: 400px;
 }
+

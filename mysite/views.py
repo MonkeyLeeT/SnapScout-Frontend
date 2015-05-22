@@ -6,9 +6,7 @@ from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 
-
-#HOST_URL = "http://FootPrint-7ih8dm447v.elasticbeanstalk.com/"
-HOST_URL = "http://127.0.0.1:8080/FootPrint/"
+HOST_URL = "http://127.0.0.1:8081/"
 
 
 def hello(request):
@@ -91,14 +89,14 @@ def get(url):
 
 def sendLoginRequest(email, password):
     data = {'email': email, 'password': password}
-    response_json = post(HOST_URL + "getToken", data)
+    response_json = post(HOST_URL + "signin", data)
     response = json.loads(response_json)
     return response
 
 
 def sendSignupRequest(email, password, nickname):
     data = {'email': email, 'password': password, 'nickname': nickname}
-    response = post(HOST_URL + "UserRegister", data)
+    response = post(HOST_URL + "signup", data)
     return response
 
 

@@ -1,6 +1,6 @@
 {% include "head.html" %}
 <div class="ui grid centered" id="index_grid">
-    <div class="seven wide column" id="right_column">
+    <div class="eleven wide column" id="right_column">
         <div class="ui blue menu" id="right_column_menu">
             <div class="item">
                 <div class="inline fields">
@@ -8,15 +8,17 @@
                         <label class="header">Search: &nbsp;</label>
 
                         <div class="ui icon input">
-                            <input type="text" placeholder="Central Park" name="address" id="input_address">
-                            <i class="search link icon" id="btn_input_address"></i>
+                            <input type="text" placeholder="Gucchi Handbag" name="address" id="input_address">
+                            <i class="search link icon" id="btn_search"></i>
                         </div>
                     </div>
                 </div>
             </div>
             <a class="active item">
-                <i class="home icon"></i> Photo and Video
+                <input type="file" name="address" id="input_address">
+                <i class="camera retro icon" id="upload"></i> Upload Photos
             </a>
+
             <div class="ui sub menu">
                 <div class="item">Choose brands:</div>
                 <a class="active item season" id="menu_all">All</a>
@@ -27,10 +29,8 @@
             </div>
         </div>
         <div id="right_content">
-
         </div>
     </div>
-</div>
 </div>
 
 
@@ -109,7 +109,7 @@
             doSearch($(this).val());
         });
 
-        $('#btn_input_address').click(function () {
+        $('#btn_search').click(function () {
             $('#input_address').trigger("enterKey");
         });
 
@@ -165,7 +165,7 @@
 
     function doSearch(address) {
         if (address == "")
-            address = "Central Park";
+            address = "Handbag Gucci";
         $.ajax({
             type: 'GET',
             url: 'searchPosition',
