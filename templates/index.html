@@ -2,21 +2,22 @@
 <div class="ui grid centered" id="index_grid">
     <div class="eleven wide column" id="right_column">
         <div class="ui blue menu" id="right_column_menu">
+
             <div class="item">
                 <div class="inline fields">
                     <div class="field">
                         <label class="header">Search: &nbsp;</label>
-
                         <div class="ui icon input">
-                            <input type="text" placeholder="Gucchi Handbag" name="address" id="input_address">
+                            <input type="text" placeholder="Gucci Handbag" name="address" id="input_address">
                             <i class="search link icon" id="btn_search"></i>
                         </div>
                     </div>
                 </div>
             </div>
+
             <a class="active item">
-                <input type="file" name="address" id="input_address">
-                <i class="camera retro icon" id="upload"></i> Upload Photos
+                <i class="camera retro icon"></i> Upload Snap for Scouting!
+                <input type="file" name="photo" id="upload_photo">
             </a>
 
             <div class="ui sub menu">
@@ -98,19 +99,19 @@
             //loadPhoto(bounds);
         });
 
-
-        $('#input_address').keyup(function (e) {
+        var keywords = $('#input_keywords');
+        keywords.keyup(function (e) {
             if (e.keyCode == 13) {
                 $(this).trigger("enterKey");
             }
         });
 
-        $('#input_address').bind("enterKey", function (e) {
+        keywords.bind("enterKey", function (e) {
             doSearch($(this).val());
         });
 
         $('#btn_search').click(function () {
-            $('#input_address').trigger("enterKey");
+            keywords.trigger("enterKey");
         });
 
 
@@ -163,14 +164,14 @@
         });
     }
 
-    function doSearch(address) {
-        if (address == "")
-            address = "Handbag Gucci";
+    function doSearch(keywords) {
+        if (keywords == "")
+            keywords = "Handbag Gucci";
         $.ajax({
             type: 'GET',
             url: 'searchPosition',
             data: {
-                'address': address
+                'additional': keywords
             },
             success: function (response) {
                 if (response.results.length > 0) {

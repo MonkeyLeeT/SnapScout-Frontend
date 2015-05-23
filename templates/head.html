@@ -29,18 +29,18 @@
                     },
                     success: function (data) {
                         $('#detail_img_src').attr('src', data.url);
-                        //$('#detail_img_similar_0').attr('src', data.similarPhotos[0].url);
-                        //$('#detail_img_similar_1').attr('src', data.similarPhotos[1].url);
-                        //$('#detail_img_similar_2').attr('src', data.similarPhotos[2].url);
-                        //$('#detail_img_similar_3').attr('src', data.similarPhotos[3].url);
-                        //$('#detail_img_similar_0').attr('photoid', data.similarPhotos[0].photoId);
-                        //$('#detail_img_similar_1').attr('photoid', data.similarPhotos[1].photoId);
-                        //$('#detail_img_similar_2').attr('photoid', data.similarPhotos[2].photoId);
-                        //$('#detail_img_similar_3').attr('photoid', data.similarPhotos[3].photoId);
+                        $('#detail_img_similar_0').attr('src', data.similarPhotos[0].url);
+                        $('#detail_img_similar_1').attr('src', data.similarPhotos[1].url);
+                        $('#detail_img_similar_2').attr('src', data.similarPhotos[2].url);
+                        $('#detail_img_similar_3').attr('src', data.similarPhotos[3].url);
+                        $('#detail_img_similar_0').attr('photoid', data.similarPhotos[0].photoId);
+                        $('#detail_img_similar_1').attr('photoid', data.similarPhotos[1].photoId);
+                        $('#detail_img_similar_2').attr('photoid', data.similarPhotos[2].photoId);
+                        $('#detail_img_similar_3').attr('photoid', data.similarPhotos[3].photoId);
                         $('#detail_img_description').html(data.content);
                         $('#comment_text').val('');
                         $('#comment_img_id').val(id);
-                        //console.log(data);
+                        console.log(data);
                         $('#detail_img_rating').html('<div class="ui star rating" id="' + id + '"></div>');
                         $('#detail_img_avg_rating').html(data.avgRank);
                         firstTimeRate = false;
@@ -117,7 +117,7 @@
     <a class="{% if place %}active {% endif %}item" href="place">
         <i class="shop icon"></i> Find discounts
     </a>
-    <a class="item" href=" {% static "footprint.apk" %}">
+    <a class="item" href=" {% static "snapscout.apk" %}">
         <i class="download icon"></i> Download iOS Client
     </a>
 
