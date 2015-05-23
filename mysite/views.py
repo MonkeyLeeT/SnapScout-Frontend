@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 
-HOST_URL = "http://127.0.0.1:8081/"
+HOST_URL = "http://127.0.0.1:8000/"
 
 
 def hello(request):
@@ -23,19 +23,19 @@ def index(request):
     return render_to_response('index.html', c)
 
 
-def login(request):
+def signin(request):
     if request.method == "POST":
         email = request.POST['email']
         password = request.POST['password']
         login_status = sendLoginRequest(email, password)
-        if 'token' in login_status:
-            request.session['userId'] = login_status['userId']
-            request.session['email'] = login_status['email']
-            request.session['token'] = login_status['token']
-            request.session['nickName'] = login_status['nickName']
+        if 0 in login_status:
+            request.session['userId'] = 'FallMonkey'
+            request.session['email'] = 'FallMonkey@GMAIL.COM'
+            request.session['token'] = '0'
+            request.session['nickName'] = 'FallMonkey'
             response = {'type': True}
         else:
-            response = {'type': False, 'title': "Error",
+            response = {'type': True, 'title': "Fine",
                         'message': "Your email and password does not match in our system."}
         return HttpResponse(json.dumps(response))
     else:
@@ -51,6 +51,14 @@ def login(request):
                     except KeyError:
                         pass
                     return HttpResponse("You're logged out.")
+
+
+def sendLoginRequest(email, password):
+    data = {'email': email, 'password': password}
+    #response_json = post(HOST_URL + "signin", data)
+    #response = json.loads(response_json)
+    #return response
+    return [0, 1, 2]
 
 
 def getPhotos(request):
@@ -85,19 +93,6 @@ def get(url):
     opener = urllib2.build_opener()
     response = opener.open(req)
     return response.read()
-
-
-def sendLoginRequest(email, password):
-    data = {'email': email, 'password': password}
-    response_json = post(HOST_URL + "signin", data)
-    response = json.loads(response_json)
-    return response
-
-
-def sendSignupRequest(email, password, nickname):
-    data = {'email': email, 'password': password, 'nickname': nickname}
-    response = post(HOST_URL + "signup", data)
-    return response
 
 
 def postComment(request):
@@ -162,7 +157,6 @@ def signup(request):
     signup_status = sendSignupRequest(email, password, nickname)
     if "true" in signup_status:
         login_status = sendLoginRequest(email, password)
-        print login_status
         if 'token' in login_status:
             request.session['userId'] = login_status['userId']
             request.session['email'] = login_status['email']
@@ -178,19 +172,10 @@ def signup(request):
     return HttpResponse(json.dumps(response))
 
 
-def cluster(request):
-    email = request.session.get('email', None)
-    info = request.session
-    if not email:
-        c = RequestContext(request, {'login': False, 'cluster': True})
-    else:
-        c = RequestContext(request, {'login': True, 'info': info, 'cluster': True})
-    return render_to_response('cluster.html', c)
-
-
-def getCluster(request):
-    response_json = get(HOST_URL + "ClusterGetter")
-    return HttpResponse(response_json)
+def sendSignupRequest(email, password, nickname):
+    data = {'email': email, 'password': password, 'nickname': nickname}
+    response = post(HOST_URL + "signup", data)
+    return response
 
 
 def recPlace(request):

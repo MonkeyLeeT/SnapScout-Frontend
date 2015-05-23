@@ -15,7 +15,7 @@
       <sourceFolder url="file://$MODULE_DIR$/static" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/mysite" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 2.7.9 (D:\Program Files\Python\python.exe)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 2.7.6 (/System/Library/Frameworks/Python.framework/Versions/2.7/bin/python2.7)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">

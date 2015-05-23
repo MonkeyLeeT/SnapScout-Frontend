@@ -121,36 +121,38 @@
         <i class="download icon"></i> Download iOS Client
     </a>
 
+    <div class="ui circular facebook icon button">
+        <i class="facebook icon"></i>
+    </div>
+    <div class="ui circular twitter icon button">
+        <i class="twitter icon"></i>
+    </div>
+    <div class="ui circular linkedin icon button">
+        <i class="linkedin icon"></i>
+    </div>
+    <div class="ui circular google plus icon button">
+        <i class="google plus icon"></i>
+    </div>
+
 
     <div class="right menu">
         {% if login %}
             <div class="item">
-                Welcome, {{ info.nickName }}!
+                Welcome back, {{ info.nickName }}!
+            </div>
+            <div class="item">
+                <div class="ui blue button" id="btn_profile">My profile</div>
             </div>
             <div class="item">
                 <div class="ui red button" id="btn_logout">Log out</div>
             </div>
         {% else %}
             <div class="item">
-                <div class="ui buttons">
-                    <div class="ui green button" id="btn_signup">Sign up</div>
-                    <div class="or"></div>
-                    <div class="ui primary button" id="btn_signin">Sign in</div>
-                </div>
+                <div class="ui green button" id="btn_signup">Sign up</div>
             </div>
-
+            <div class="item">
+                <div class="ui primary button" id="btn_signin">Sign in</div>
+            </div>
         {% endif %}
-        <div class="ui circular facebook icon button">
-            <i class="facebook icon"></i>
-        </div>
-        <div class="ui circular twitter icon button">
-            <i class="twitter icon"></i>
-        </div>
-        <div class="ui circular linkedin icon button">
-            <i class="linkedin icon"></i>
-        </div>
-        <div class="ui circular google plus icon button">
-            <i class="google plus icon"></i>
-        </div>
     </div>
 </div>

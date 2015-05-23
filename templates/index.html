@@ -7,6 +7,7 @@
                 <div class="inline fields">
                     <div class="field">
                         <label class="header">Search: &nbsp;</label>
+
                         <div class="ui icon input">
                             <input type="text" placeholder="Gucci Handbag" name="address" id="input_address">
                             <i class="search link icon" id="btn_search"></i>
@@ -16,21 +17,13 @@
             </div>
 
             <a class="active item">
-                <i class="camera retro icon"></i> Upload Snap for Scouting!
+                <i class="camera retro icon"></i> Upload your snap for scouting:
                 <input type="file" name="photo" id="upload_photo">
             </a>
-
-            <div class="ui sub menu">
-                <div class="item">Choose brands:</div>
-                <a class="active item season" id="menu_all">All</a>
-                <a class="item season">LV</a>
-                <a class="item season">Gucci</a>
-                <a class="item season">Chanel</a>
-                <a class="item season">Hermes</a>
-            </div>
         </div>
         <div id="right_content">
         </div>
+
     </div>
 </div>
 
@@ -51,12 +44,8 @@
 
     function HomeControl(controlDiv, map) {
 
-        // Set CSS styles for the DIV containing the control
-        // Setting padding to 5 px will offset the control
-        // from the edge of the map
         controlDiv.style.padding = '5px';
 
-        // Set CSS for the control border
         var controlUI = document.createElement('div');
         controlUI.style.backgroundColor = 'white';
         controlUI.style.borderStyle = 'solid';
@@ -66,7 +55,6 @@
         controlUI.title = 'Click to load photo in this area';
         controlDiv.appendChild(controlUI);
 
-        // Set CSS for the control interior
         var controlText = document.createElement('div');
         controlText.style.fontFamily = 'Arial,sans-serif';
         controlText.style.fontSize = '12px';
