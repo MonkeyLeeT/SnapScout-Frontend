@@ -5,13 +5,6 @@ body {
     -o-background-size: cover;
     background-size: cover;
 }
-#index_grid {
-    height: 100%;
-}
-
-#left_column, #right_column {
-    height: 100%
-}
 
 #map_canvas {
     height: 95%;
@@ -52,4 +45,3 @@ body {
 #recommendation_loading {
     height: 400px;
 }
-

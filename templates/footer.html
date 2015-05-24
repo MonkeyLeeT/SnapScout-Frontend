@@ -1,3 +1,8 @@
+<div id="detail_img_loader">
+    <div class="ui active dimmer">
+        <div class="ui mini text loader">Loading</div>
+    </div>
+</div>
 <div class="ui small modal" id="modal_sign_up">
     <i class="close icon"></i>
 
@@ -12,12 +17,16 @@
             </div>
             <div class="ui form" id="signup_form">
                 <div class="field">
+                    <label>Username</label>
+                    <input type="text" name="username" id="signup_username">
+                </div>
+                <div class="field">
                     <label>Email</label>
                     <input type="email" name="email" id="signup_email">
                 </div>
                 <div class="field">
-                    <label>Username</label>
-                    <input type="text" name="username" id="signup_username">
+                    <label>Bio</label>
+                    <input type="text" name="bio" id="signup_bio">
                 </div>
                 <div class="field">
                     <label>Password</label>
@@ -46,7 +55,7 @@
     <i class="close icon"></i>
 
     <div class="header">
-        Sign in with your email and password
+        Sign in with your username and password
     </div>
     <div class="content">
         <div class="description">
@@ -54,10 +63,10 @@
                 <div class="header" id="signin_error_title">Network error</div>
                 <p id="signin_error_message">Can't connect to the login server.</p>
             </div>
-            <div class="ui form" id="login_form">
+            <div class="ui form" id="signin_form">
                 <div class="field">
-                    <label>Email</label>
-                    <input type="email" name="email" id="signin_email">
+                    <label>Username</label>
+                    <input type="text" name="username" id="signin_username">
                 </div>
                 <div class="field">
                     <label>Password</label>
@@ -85,7 +94,7 @@
     <img src="static/image/test image.jpg">
   </div>
   <div class="content">
-    <a class="header">Stevie Feliciano</a>
+    <a class="header">{{  info.username }}</a>
     <div class="meta">
       <span class="date">Joined in 2014</span>
     </div>
@@ -114,7 +123,7 @@
         <div class="ui grid">
 
             <div class="ten wide column">
-                <img width="100%" src="https://s3.amazonaws.com/footprint.linhuang/winter3.jpg" id="detail_img_src">
+                <img width="100%" src="static/image/test image.jpg" id="detail_img_src">
                 Rating: <span id="detail_img_avg_rating"></span>
 
                 <div id="detail_img_rating"></div>
@@ -200,16 +209,12 @@
             </div>
         </div>
     </div>
-
 </div>
-
 <script type="text/javascript">
-
     $('#btn_profile')
         .popup({
-                on: 'click',
-                popup: '#popup_profile',
-                context:'#right_content'
+                popup: $('.popup'),
+                on: 'click'
         })
     ;
 
@@ -218,7 +223,12 @@
         $('#signup_email').val("");
         $('#signup_password').val("");
         $('#signup_nickname').val("");
-        $('#modal_profile').modal('show');
+        $('#modal_sign_up').modal({
+            onApprove: function () {
+                $('#signup_form').form('validate form');
+                return false;
+            }
+        }).modal('show');
     });
 
     $('#btn_signin').click(function () {
@@ -227,7 +237,7 @@
         $('#signin_password').val("");
         $('#modal_sign_in').modal({
             onApprove: function () {
-                $('#login_form').form('validate form');
+                $('#signin_form').form('validate form');
                 return false;
             }
         }).modal('show');
@@ -248,15 +258,16 @@
             dataType: 'text'
         });
     });
+
     // Validate the login form.
-    $('#login_form')
+    $('#signin_form')
             .form({
                 email: {
-                    identifier: 'email',
+                    identifier: 'username',
                     rules: [
                         {
-                            type: 'email',
-                            prompt: 'Please enter a email'
+                            type: 'empty',
+                            prompt: 'Please enter your username'
                         }
                     ]
                 },
@@ -271,14 +282,15 @@
                 }
             }, {
                 onSuccess: function () {
-                    var email = $('#signin_email').val();
+                    var username = $('#signin_username').val();
                     var password = $('#signin_password').val();
                     var token = $('input[name=csrfmiddlewaretoken]').val();
+                    console.log("hey");
                     $.ajax({
                         type: 'POST',
                         url: 'signin',
                         data: {
-                            'email': email,
+                            'username': username,
                             'password': password,
                             'csrfmiddlewaretoken': token
                         },
@@ -350,8 +362,9 @@
                 onSuccess: function () {
                     var email = $('#signup_email').val();
                     var password = $('#signup_password').val();
-                    var confirm_pw = $('confirm_password').val();
+                    var confirm_pw = $('#signup_confirm_password').val();
                     var username = $('#signup_username').val();
+                    var bio = $('#signup_bio').val();
                     var token = $('input[name=csrfmiddlewaretoken]').val();
                     $.ajax({
                         type: 'POST',
@@ -361,6 +374,7 @@
                             'password': password,
                             'confirm_password': confirm_pw,
                             'username': username,
+                            'bio':bio,
                             'csrfmiddlewaretoken': token
                         },
                         success: function (response) {
@@ -424,6 +438,7 @@
             dataType: 'json'
         });
     });
+
     var opening = false;
     $('.detail_img_similar_pic').click(function () {
         var id = $(this).attr('photoid');
@@ -470,9 +485,9 @@
                                         },
                                         success: function (response) {
                                             if (response['success']) {
-
+                                                console.log("success")
                                             } else {
-                                                //alert(response.error);
+                                                console.log("fail")
                                             }
                                         },
                                         error: function (err) {
@@ -509,10 +524,5 @@
 
     });
 </script>
-<div id="detail_img_loader">
-    <div class="ui active dimmer">
-        <div class="ui mini text loader">Loading</div>
-    </div>
-</div>
 </body>
 </html>

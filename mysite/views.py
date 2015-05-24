@@ -6,36 +6,60 @@ from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 
-HOST_URL = "http://127.0.0.1:8000/"
-
-
-def hello(request):
-    return HttpResponse("Hello world")
+HOST_URL = "http://127.0.0.1:8081/"
 
 
 def index(request):
-    email = request.session.get('email', None)
+    username = request.session.get('username', None)
+    print username
     info = request.session
-    if not email:
+    if not username:
         c = RequestContext(request, {'login': False, 'index': True})
     else:
         c = RequestContext(request, {'login': True, 'info': info, 'index': True})
     return render_to_response('index.html', c)
 
 
-def signin(request):
-    if request.method == "POST":
-        email = request.POST['email']
-        password = request.POST['password']
-        login_status = sendLoginRequest(email, password)
-        if 0 in login_status:
-            request.session['userId'] = 'FallMonkey'
-            request.session['email'] = 'FallMonkey@GMAIL.COM'
-            request.session['token'] = '0'
-            request.session['nickName'] = 'FallMonkey'
+def signup(request):
+    email = request.POST['email']
+    password = request.POST['password']
+    confirm_password = request.POST['confirm_password']
+    username = request.POST['username']
+    bio = request.POST['bio']
+    signup_status = sendsignuprequest(email, password, confirm_password, username, bio)
+    if "up" in signup_status['msg']:
+        login_status = sendsigninrequest(email, password)
+        if 'token' in login_status:
+            request.session['email'] = login_status['email']
+            request.session['token'] = login_status['token']
+            request.session['username'] = login_status['username']
             response = {'type': True}
         else:
-            response = {'type': True, 'title': "Fine",
+            response = {'type': False, 'title': "Error",
+                        'message': "Auto login failed. Please login yourself."}
+    else:
+        response = {'type': False, 'title': "Error",
+                    'message': signup_status['msg']}
+    return HttpResponse(json.dumps(response))
+
+
+def sendsignuprequest(email, password, confirm_password,  username, bio):
+    data = {'email': email, 'password': password, 'confirm_password': confirm_password, 'username': username, 'bio': bio}
+    response_json = post(HOST_URL + "signup", data)
+    response = json.loads(response_json)
+    return response
+
+
+def signin(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        login_status = sendsigninrequest(username, password)
+        if 'success' in login_status['msg']:
+            request.session['username'] = username
+            response = {'type': True}
+        else:
+            response = {'type': False, 'title': "Error",
                         'message': "Your email and password does not match in our system."}
         return HttpResponse(json.dumps(response))
     else:
@@ -44,21 +68,21 @@ def signin(request):
                 action = request.GET['action']
                 if action == 'logout':
                     try:
-                        del request.session['userId']
+                        del request.session['username']
                         del request.session['email']
                         del request.session['token']
-                        del request.session['nickName']
+                        del request.session['username']
                     except KeyError:
                         pass
                     return HttpResponse("You're logged out.")
 
 
-def sendLoginRequest(email, password):
-    data = {'email': email, 'password': password}
-    #response_json = post(HOST_URL + "signin", data)
-    #response = json.loads(response_json)
-    #return response
-    return [0, 1, 2]
+def sendsigninrequest(username, password):
+    data = {'username': username, 'password': password}
+    response_json = post(HOST_URL + "login", data)
+    response = json.loads(response_json)
+    print response
+    return response
 
 
 def getPhotos(request):
@@ -95,20 +119,6 @@ def get(url):
     return response.read()
 
 
-def postComment(request):
-    email = request.session.get('email', None)
-    if not email:
-        response = {'success': False, 'error': "You should log in to make a comment."}
-        return HttpResponse(json.dumps(response))
-    else:
-        photoId = request.POST['photoId']
-        text = request.POST['text']
-        data = {'userId': request.session['userId'], 'photoId': photoId, 'text': text}
-        response_json = post(HOST_URL + "CommentPoster", data)
-        response = {'success': True, 'response': response_json}
-        return HttpResponse(json.dumps(response))
-
-
 def postRating(request):
     email = request.session.get('email', None)
     if not email:
@@ -121,75 +131,3 @@ def postRating(request):
         response_json = post(HOST_URL + "RatingPoster", data)
         response = {'success': True, 'response': response_json}
         return HttpResponse(json.dumps(response))
-
-
-def searchPosition(request):
-    API_KEY = "&key=AIzaSyDfZSdXj99Sv1qAvCebtB2DjIrubD6aPKo"
-    URL = "https://maps.googleapis.com/maps/api/geocode/json?address="
-    address = request.GET['address']
-    address = address.replace(" ", "+")
-    requestUrl = URL + address + API_KEY
-    response = get(requestUrl)
-    return HttpResponse(response)
-
-
-def recommendation(request):
-    email = request.session.get('email', None)
-    info = request.session
-    if not email:
-        c = RequestContext(request, {'login': False, 'recommendation': True})
-    else:
-        c = RequestContext(request, {'login': True, 'info': info, 'recommendation': True})
-    return render_to_response('recommendation.html', c)
-
-
-def getRecommendationPhotos(request):
-    userId = request.session['userId']
-    data = {'userId': userId}
-    response_json = post(HOST_URL + "RecommendationGetter", data)
-    return HttpResponse(response_json)
-
-
-def signup(request):
-    email = request.POST['email']
-    password = request.POST['password']
-    nickname = request.POST['nickname']
-    signup_status = sendSignupRequest(email, password, nickname)
-    if "true" in signup_status:
-        login_status = sendLoginRequest(email, password)
-        if 'token' in login_status:
-            request.session['userId'] = login_status['userId']
-            request.session['email'] = login_status['email']
-            request.session['token'] = login_status['token']
-            request.session['nickName'] = login_status['nickName']
-            response = {'type': True}
-        else:
-            response = {'type': False, 'title': "Error",
-                        'message': "Auto login failed. Please login yourself."}
-    else:
-        response = {'type': False, 'title': "Error",
-                    'message': "Existing user in our system."}
-    return HttpResponse(json.dumps(response))
-
-
-def sendSignupRequest(email, password, nickname):
-    data = {'email': email, 'password': password, 'nickname': nickname}
-    response = post(HOST_URL + "signup", data)
-    return response
-
-
-def recPlace(request):
-    email = request.session.get('email', None)
-    info = request.session
-    if not email:
-        c = RequestContext(request, {'login': False, 'place': True})
-    else:
-        c = RequestContext(request, {'login': True, 'info': info, 'place': True})
-    return render_to_response('place.html', c)
-
-
-def getRecPlace(request):
-    userId = request.session['userId']
-    data = {'userId': userId}
-    response_json = post(HOST_URL + "PlaceRecommendationGetter", data)
-    return HttpResponse(response_json)

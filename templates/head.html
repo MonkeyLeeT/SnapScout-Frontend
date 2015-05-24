@@ -8,6 +8,7 @@
     <link href="{% static "css/perfect-scrollbar.min.css" %}" rel="stylesheet">
     <link href="{% static "css/timeline.css" %}" rel="stylesheet">
     <link href="{% static "css/custom.css" %}" rel="stylesheet">
+    <link href="{% static "css/photobox.css" %}" rel="stylesheet">
     <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
     <script type="text/javascript" src="{% static "js/semantic.min.js" %}"></script>
     <script type="text/javascript" src="{% static "js/perfect-scrollbar.min.js" %}"></script>
@@ -111,34 +112,40 @@
     <a class="{% if index %}active{% endif %} item" href="/">
         <i class="home icon"></i> Home
     </a>
-    <a class="{% if recommendation %}active{% endif %} item" href="recommendation">
-        <i class="thumbs up icon"></i> Trending brands
-    </a>
-    <a class="{% if place %}active {% endif %}item" href="place">
-        <i class="shop icon"></i> Find discounts
-    </a>
     <a class="item" href=" {% static "snapscout.apk" %}">
-        <i class="download icon"></i> Download iOS Client
+        <i class="download icon"></i> Download iOS client
     </a>
 
-    <div class="ui circular facebook icon button">
-        <i class="facebook icon"></i>
+    <div class="item">
+        <div class="ui circular facebook icon button">
+            <i class="facebook icon"></i>
+        </div>
+        <div class="ui circular twitter icon button">
+            <i class="twitter icon"></i>
+        </div>
+        <div class="ui circular linkedin icon button">
+            <i class="linkedin icon"></i>
+        </div>
+        <div class="ui circular google plus icon button">
+            <i class="google plus icon"></i>
+        </div>
+        <div class="ui circular instagram icon button">
+            <i class="instagram icon"></i>
+        </div>
+        <div class="ui circular youtube icon button">
+            <i class="youtube icon"></i>
+        </div>
+        <div class="ui circular icon teal button">
+            <i class="qq icon"></i>
+        </div>
+        <div class="ui circular icon red button">
+            <i class="weibo icon"></i>
+        </div>
     </div>
-    <div class="ui circular twitter icon button">
-        <i class="twitter icon"></i>
-    </div>
-    <div class="ui circular linkedin icon button">
-        <i class="linkedin icon"></i>
-    </div>
-    <div class="ui circular google plus icon button">
-        <i class="google plus icon"></i>
-    </div>
-
-
     <div class="right menu">
         {% if login %}
             <div class="item">
-                Welcome back, {{ info.nickName }}!
+                Welcome back, {{ info.username }}!
             </div>
             <div class="item">
                 <div class="ui blue button" id="btn_profile">My profile</div>
@@ -147,11 +154,10 @@
                 <div class="ui red button" id="btn_logout">Log out</div>
             </div>
         {% else %}
-            <div class="item">
-                <div class="ui green button" id="btn_signup">Sign up</div>
-            </div>
-            <div class="item">
-                <div class="ui primary button" id="btn_signin">Sign in</div>
+            <div class="items ui buttons">
+                <div class="ui inverted green button" id="btn_signup">Sign up</div>
+                <div class="or"></div>
+                <div class="ui inverted blue button" id="btn_signin">Sign in</div>
             </div>
         {% endif %}
     </div>
