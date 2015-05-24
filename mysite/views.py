@@ -86,14 +86,12 @@ def sendsigninrequest(username, password):
 
 
 def getPhotos(request):
-    season = request.GET['season']
-    lat1 = request.GET['lat1']
-    lat2 = request.GET['lat2']
-    lng1 = request.GET['lng1']
-    lng2 = request.GET['lng2']
-    data = {'season': season, 'lat1': lat1, 'lat2': lat2, "lng1": lng1, "lng2": lng2}
-    response_json = post(HOST_URL + "PhotoGetter", data)
-    return HttpResponse(response_json)
+    data = {}
+    #response_json = post(HOST_URL + "history", data)
+    response_json = {}
+    for i in range(16):
+        response_json[i] = "static/image/test image.jpg"
+    return HttpResponse(json.dumps(response_json))
 
 
 def getSinglePhoto(request):

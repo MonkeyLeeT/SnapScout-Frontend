@@ -1,6 +1,6 @@
 {% include "head.html" %}
 <div class="ui grid centered" id="index_grid">
-    <div class="eleven wide column" id="right_column">
+    <div class="twelve wide column" id="right_column">
         <div class="ui blue menu" id="right_column_menu">
 
             <div class="item">
@@ -59,7 +59,6 @@
             keywords.trigger("enterKey");
         });
 
-
     });
     function loadPhoto(bound) {
         var season = $('.season.active').html();
@@ -87,7 +86,7 @@
             },
             dataType: 'json'
         });
-    }
+    };
 
     function doSearch(keywords) {
         if (keywords == "")
@@ -120,76 +119,65 @@
         });
     };
 
-//-------------------------------------------
-// Load history results
-//-------------------------------------------
-!(function(){
-    'use strict';
+    //-------------------------------------------
+    // Load history results
+    //-------------------------------------------
+    !(function () {
+        'use strict';
 
-	var numOfImages = window.location.search ? parseInt(window.location.search.match(/\d+$/)[0]) : 50,
-		gallery = $('#gallery'),
-		videos = [
-		];
+        var gallery = $('#gallery'),
+                videos = [];
 
-    // Get some photos from Flickr for the demo
-    $.ajax({
-        url: 'https://api.flickr.com/services/rest/',
-        data: {
-            format: 'json',
-            method: 'flickr.interestingness.getList',
-			per_page : numOfImages,
-            api_key: 'b51d3a7c3988ba6052e25cb152aecba2' // this is my own API key, please use yours
-        },
-	    dataType: 'jsonp',
-        jsonp: 'jsoncallback'
-    })
-	.done(function (data){
-        var loadedIndex = 1, isVideo;
+        // Get some photos from Flickr for the demo
+        $.ajax({
+            type: 'GET',
+            url: 'getPhotos',
+            data: {
+            },
+            dataType: 'json',
+        })
+                .done(function (data) {
+                    var loadedIndex = 1, isVideo;
 
-		// add the videos to the collection
-		data.photos.photo = data.photos.photo.concat(videos);
+                    $.each(data, function (index, photo) {
+                        isVideo = false;
+                        // http://www.flickr.com/services/api/misc.urls.html
+                        var url = data[index],
+                                img = document.createElement('img');
+                        // lazy show the photos one by one
+                        img.onload = function (e) {
+                            img.onload = null;
+                            var link = document.createElement('a'),
+                                    li = document.createElement('li')
 
-        $.each( data.photos.photo, function(index, photo){
-			isVideo = photo.thumb ? true : false;
-			// http://www.flickr.com/services/api/misc.urls.html
-            var url = 'http://farm' + photo.farm + '.static.flickr.com/' + photo.server + '/' + photo.id + '_' + photo.secret,
-				img = document.createElement('img');
-            url = 'static/image/test image';
-			// lazy show the photos one by one
-			img.onload = function(e){
-				img.onload = null;
-				var link = document.createElement('a'),
-				li = document.createElement('li')
-				link.href = this.largeUrl;
+                            link.appendChild(this);
+                            if (isVideo) {
+                                link.rel = 'video';
+                                li.className = 'video'
+                            }
+                            $(link).addClass('history');
+                            li.appendChild(link);
+                            gallery[0].appendChild(li);
 
-				link.appendChild(this);
-				if( this.isVideo ){
-					link.rel = 'video';
-					li.className = 'video'
-				}
-				li.appendChild(link);
-				gallery[0].appendChild(li);
+                            setTimeout(function () {
+                                $(li).addClass('loaded');
+                            }, 25 * loadedIndex++);
+                        };
 
-				setTimeout( function(){
-					$(li).addClass('loaded');
-				}, 25*loadedIndex++);
-			};
-
-			img['largeUrl'] = isVideo ? photo.url : url + '_b.jpg';
-			img['isVideo'] = isVideo;
-			img.src = isVideo ? photo.thumb : url + '.jpg';
-			img.title = photo.title;
-        });
-
-		// finally, initialize photobox on all retrieved images
-		$('#gallery').photobox('a', { thumbs:true }, callback);
-		// using setTimeout to make sure all images were in the DOM, before the history.load() function is looking them up to match the url hash
-		setTimeout(window._photobox.history.load, 1000);
-		function callback(){
-			console.log('callback for loaded content:', this);
-		};
-    });
-})();
+                        img['largeUrl'] = isVideo ? photo.url : url;
+                        img['isVideo'] = isVideo;
+                        img.src = isVideo ? photo.thumb : url;
+                        img.title = index;
+                    });
+                    // finally, initialize photobox on all retrieved images
+                    //$('#gallery').photobox('a', {thumbs: true}, callback);
+                    // using setTimeout to make sure all images were in the DOM, before the history.load() function is looking them up to match the url hash
+                    setTimeout(window._photobox.history.load, 1000);
+                    function callback() {
+                        console.log('callback for loaded content:', this);
+                    };
+                });
+    })();
 </script>
 {% include "footer.html" %}
 

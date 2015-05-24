@@ -89,29 +89,31 @@
 </div>
 
 <div class="ui special popup" id="popup_profile">
-<div class="ui card">
-  <div class="image">
-    <img src="static/image/test image.jpg">
-  </div>
-  <div class="content">
-    <a class="header">{{  info.username }}</a>
-    <div class="meta">
-      <span class="date">Joined in 2014</span>
+    <div class="ui card">
+        <div class="image">
+            <img src="static/image/test image.jpg">
+        </div>
+        <div class="content">
+            <a class="header">{{ info.username }}</a>
+
+            <div class="meta">
+                <span class="date">Joined in 2014</span>
+            </div>
+            <div class="description">
+                Stevie Feliciano is a library scientist living in New York City. She likes to spend her time reading,
+                running, and writing.
+            </div>
+        </div>
+        <div class="extra content">
+            <a>
+                <i class="user icon"></i>
+                22 Friends
+            </a>
+        </div>
     </div>
-    <div class="description">
-      Stevie Feliciano is a library scientist living in New York City. She likes to spend her time reading, running, and writing.
-    </div>
-  </div>
-  <div class="extra content">
-    <a>
-      <i class="user icon"></i>
-      22 Friends
-    </a>
-  </div>
-</div>
 </div>
 
-<div class="ui fullscreen modal" id="modal_picture">
+<div class="ui modal" id="modal_picture">
     <i class="close icon"></i>
 
     <div id="detail_img_loader_2">
@@ -122,14 +124,13 @@
     <div class="content">
         <div class="ui grid">
 
-            <div class="ten wide column">
+            <div class="seven wide column">
                 <img width="100%" src="static/image/test image.jpg" id="detail_img_src">
-                Rating: <span id="detail_img_avg_rating"></span>
 
                 <div id="detail_img_rating"></div>
             </div>
             <div class="six wide column">
-                <h3 class="ui dividing header">Similar pictures</h3>
+                <h3 class="ui dividing header">Possible matches:</h3>
 
                 <div class="ui grid">
                     <div class="four wide column"><img width="100%"
@@ -193,16 +194,6 @@
                                 </div>
                             </div>
 
-                            <form class="ui reply form">
-                                <div class="field">
-                                    <textarea id="comment_text"></textarea>
-                                </div>
-                                <input type="hidden" id="comment_img_id">
-
-                                <div class="ui blue labeled icon button" id="btn_add_comment">
-                                    <i class="icon edit"></i> <span id="span_add_reply">Add Reply</span>
-                                </div>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -211,12 +202,17 @@
     </div>
 </div>
 <script type="text/javascript">
+
+    $(document).on("click", ".history", function(){
+        console.log("clicked!");
+        $('#modal_picture').modal('show');
+    });
+
     $('#btn_profile')
-        .popup({
+            .popup({
                 popup: $('.popup'),
                 on: 'click'
-        })
-    ;
+            });
 
     $('#btn_signup').click(function () {
         $('#signup_error').hide();
@@ -374,7 +370,7 @@
                             'password': password,
                             'confirm_password': confirm_pw,
                             'username': username,
-                            'bio':bio,
+                            'bio': bio,
                             'csrfmiddlewaretoken': token
                         },
                         success: function (response) {
