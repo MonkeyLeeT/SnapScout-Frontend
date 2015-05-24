@@ -50,7 +50,6 @@
         </div>
     </div>
 </div>
-
 <div class="ui small modal" id="modal_sign_in">
     <i class="close icon"></i>
 
@@ -87,7 +86,6 @@
         </div>
     </div>
 </div>
-
 <div class="ui special popup" id="popup_profile">
     <div class="ui card">
         <div class="image">
@@ -112,100 +110,119 @@
         </div>
     </div>
 </div>
+    <div class="ui modal" id="modal_results">
+        <i class="close icon"></i>
 
-<div class="ui modal" id="modal_picture">
-    <i class="close icon"></i>
-
-    <div id="detail_img_loader_2">
-        <div class="ui active dimmer">
-            <div class="ui mini text loader">Loading</div>
-        </div>
-    </div>
-    <div class="content">
-        <div class="ui grid">
-
-            <div class="seven wide column">
-                <img width="100%" src="static/image/test image.jpg" id="detail_img_src">
-
-                <div id="detail_img_rating"></div>
+        <div id="detail_img_loader_2">
+            <div class="ui active dimmer">
+                <div class="ui mini text loader">Loading</div>
             </div>
-            <div class="six wide column">
-                <h3 class="ui dividing header">Possible matches:</h3>
+        </div>
+        <div class="content">
+            <div class="ui grid">
 
-                <div class="ui grid">
-                    <div class="four wide column"><img width="100%"
-                                                       class="ui medium rounded image detail_img_similar_pic"
-                                                       photoid="0"
-                                                       src="static/image/test image.jpg"
-                                                       id="detail_img_similar_0">
-                    </div>
-                    <div class="four wide column"><img width="100%"
-                                                       class="ui medium rounded image detail_img_similar_pic"
-                                                       photoid="0"
-                                                       src="static/image/test image.jpg"
-                                                       id="detail_img_similar_1">
-                    </div>
-                    <div class="four wide column"><img width="100%"
-                                                       class="ui medium rounded image detail_img_similar_pic"
-                                                       photoid="0"
-                                                       src="static/image/test image.jpg"
-                                                       id="detail_img_similar_2">
-                    </div>
-                    <div class="four wide column"><img width="100%"
-                                                       class="ui medium rounded image detail_img_similar_pic"
-                                                       photoid="0"
-                                                       src="static/image/test image.jpg"
-                                                       id="detail_img_similar_3">
-                    </div>
+                <div class="four wide column">
+                    <img width="100%" src="static/image/test image.jpg" id="detail_img_src">
 
-
+                    <div id="detail_img_rating"></div>
                 </div>
-                <div class="ui grid">
-                    <div class="sixteen wide column">
+                <div class="six wide column">
+                    <h3 class="ui dividing header">Possible matches:</h3>
 
-                        <h3 class="ui dividing header">Description</h3>
-
-
-                        <div id="detail_img_description">
-                            detail_img_description
+                    <div class="ui grid">
+                        <div class="four wide column"><img width="100%"
+                                                           class="ui medium rounded image detail_img_similar_pic"
+                                                           photoid="0"
+                                                           src="static/image/test image.jpg"
+                                                           id="detail_img_similar_0">
                         </div>
                     </div>
-                    <div class="sixteen wide column">
-                        <h3 class="ui dividing header">Comments</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui small modal" id="modal_picture">
+        <i class="close icon"></i>
 
-                        <div class="ui comments">
+        <div id="detail_img_loader_2">
+            <div class="ui active dimmer">
+                <div class="ui mini text loader">Loading</div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="ui grid">
 
-                            <div id="detail_img_comments">
-                                <div class="comment">
-                                    <a class="avatar">
-                                        <img src="static/image/test image.jpg">
-                                    </a>
+                <div class="seven wide column">
+                    <img width="100%" src="static/image/test image.jpg" id="detail_img_src">
+                        <div class="two fluid ui inverted icon buttons">
+                            <div class="ui blue basic button" id="like">
+                                <i class="pointing right large icon"></i>
+                            </div>
+                            <div class="ui green basic  button" id="shop">
+                                <i class="shop large icon"></i>
+                            </div>
+                        </div>
+                </div>
+                <div class="six wide column">
 
-                                    <div class="content">
-                                        <a class="author">Ted</a>
+                    <div class="ui grid">
+                        <div class="sixteen wide column">
 
-                                        <div class="metadata">
-                                            <span class="date">Today at 5:30PM</span>
-                                        </div>
-                                        <div class="text">
-                                            Very fashion, wow!
+                            <h3 class="ui dividing header">Brands</h3>
+
+
+                            <div id="detail_img_description">
+                                Description of brands
+                            </div>
+                        </div>
+                        <div class="sixteen wide column">
+                            <h3 class="ui dividing header">Comments</h3>
+
+                            <div class="ui comments">
+
+                                <div id="detail_img_comments">
+                                    <div class="comment">
+                                        <a class="avatar">
+                                            <img src="static/image/test image.jpg">
+                                        </a>
+
+                                        <div class="content">
+                                            <a class="author">Ted</a>
+
+                                            <div class="metadata">
+                                                <span class="date">Today at 5:30PM</span>
+                                            </div>
+                                            <div class="text">
+                                                Very fashion, wow!
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 <script type="text/javascript">
 
-    $(document).on("click", ".history", function(){
-        console.log("clicked!");
-        $('#modal_picture').modal('show');
+    $(document).on("click", ".history", function () {
+        // attach events to buttons
+        $('#modal_picture')
+                .modal({
+                    closable: false,
+                })
+                .modal('attach events', '.detail_img_similar_pic')
+        ;
+        // show first now
+        $('#modal_results')
+                .modal({
+                    allowMultiple: true
+                })
+                .modal('show')
+        ;
     });
 
     $('#btn_profile')
@@ -213,6 +230,14 @@
                 popup: $('.popup'),
                 on: 'click'
             });
+
+    $('#shop').click(function () {
+        window.open('http://www.google.com');
+    });
+
+    $('#like').click(function () {
+        console.log('clicked like');
+    });
 
     $('#btn_signup').click(function () {
         $('#signup_error').hide();
@@ -255,7 +280,7 @@
         });
     });
 
-    // Validate the login form.
+    // Validate the signin form.
     $('#signin_form')
             .form({
                 email: {
@@ -396,129 +421,36 @@
 
             });
 
-    $('#btn_add_comment').click(function () {
-        var token = $('input[name=csrfmiddlewaretoken]').val();
-        var comment_text = $('#comment_text').val();
-        var photoId = $('#comment_img_id').val();
-        $.ajax({
-            type: 'POST',
-            url: 'postComment',
-            data: {
-                'photoId': photoId,
-                'text': comment_text,
-                'csrfmiddlewaretoken': token
-            },
-            beforeSend: function () {
-                $('#span_add_reply').html("Submitting...");
-            },
-            success: function (response) {
-                if (response['success']) {
-                    var one_comment = '<div class="comment"> <a class="avatar"><img src="static/image/footprint.png"></a><div class="content"><a class="author">';
-                    one_comment += '{{ info.nickName }}</a><div class="metadata"><span class="date">';
-                    one_comment += 'Just now</span></div><div class="text">'
-                    one_comment += comment_text + '</div></div></div>';
-                    if ($('#detail_img_comments').html() == "No comment. Be the first one!") {
-                        $('#detail_img_comments').html(one_comment);
-                    } else {
-                        $('#detail_img_comments').append(one_comment);
-                    }
-                    $('#comment_text').val("");
-                } else {
-                    alert(response.error);
-                }
-                $('#span_add_reply').html("Add reply");
-            },
-            error: function (err) {
-                console.log(err);
-            },
-            dataType: 'json'
-        });
-    });
+    var opening = true;
+    /*$('.detail_img_similar_pic').click(function () {
+     var id = $(this).attr('photoid');
+     if (opening == false) {
+     $.ajax({
+     type: 'GET',
+     url: 'getSinglePhoto',
+     data: {
+     'photoId': id
+     },
+     beforeSend: function (s) {
+     $('#detail_img_loader_2').show();
+     },
+     success: function (data) {
+     $('#detail_img_src').attr('src', data.url);
+     $('#detail_img_description').html(data.content);
+     $('#comment_text').val('');
+     $('#comment_img_id').val(id);
+     $('#modal_results').modal('refresh');
+     $('#detail_img_loader_2').hide();
+     opening = false;
+     },
+     error: function (err) {
+     console.log(err);
+     },
+     dataType: 'json'
+     });
+     }
 
-    var opening = false;
-    $('.detail_img_similar_pic').click(function () {
-        var id = $(this).attr('photoid');
-        if (opening == false) {
-            $.ajax({
-                type: 'GET',
-                url: 'getSinglePhoto',
-                data: {
-                    'photoId': id
-                },
-                beforeSend: function () {
-                    $('#detail_img_loader_2').show();
-                },
-                success: function (data) {
-                    $('#detail_img_src').attr('src', data.url);
-                    $('#detail_img_similar_0').attr('src', data.similarPhotos[0].url);
-                    $('#detail_img_similar_1').attr('src', data.similarPhotos[1].url);
-                    $('#detail_img_similar_2').attr('src', data.similarPhotos[2].url);
-                    $('#detail_img_similar_3').attr('src', data.similarPhotos[3].url);
-                    $('#detail_img_similar_0').attr('photoid', data.similarPhotos[0].photoId);
-                    $('#detail_img_similar_1').attr('photoid', data.similarPhotos[1].photoId);
-                    $('#detail_img_similar_2').attr('photoid', data.similarPhotos[2].photoId);
-                    $('#detail_img_similar_3').attr('photoid', data.similarPhotos[3].photoId);
-                    $('#detail_img_description').html(data.content);
-                    $('#comment_text').val('');
-                    $('#comment_img_id').val(id);
-                    $('#detail_img_rating').html('<div class="ui star rating" id="' + id + '"></div>');
-                    $('#detail_img_avg_rating').html(data.avgRank);
-                    $('.ui.rating')
-                            .rating({
-                                initialRating: data.rating,
-                                maxRating: 5,
-                                onRate: function (value) {
-                                    var photoId = $(this).attr('id');
-                                    var token = $('input[name=csrfmiddlewaretoken]').val();
-
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: 'postRating',
-                                        data: {
-                                            'rating': value,
-                                            'photoId': photoId,
-                                            'csrfmiddlewaretoken': token
-                                        },
-                                        success: function (response) {
-                                            if (response['success']) {
-                                                console.log("success")
-                                            } else {
-                                                console.log("fail")
-                                            }
-                                        },
-                                        error: function (err) {
-                                            console.log(err);
-                                        },
-                                        dataType: 'json'
-                                    });
-                                }
-                            });
-                    var comments = data.comments;
-                    var comment_html = "No comment. Be the first one!";
-                    if (comments.length > 0) {
-                        comment_html = "";
-                        for (var i = 0; i < comments.length; i++) {
-                            var comment = comments[i];
-                            var one_comment = '<div class="comment"> <a class="avatar"><img src="static/image/footprint.png"></a><div class="content"><a class="author">';
-                            one_comment += comment.title + '</a><div class="metadata"><span class="date">';
-                            one_comment += comment.date + '</span></div><div class="text">'
-                            one_comment += comment.content + '</div></div></div>';
-                            comment_html += one_comment;
-                        }
-                    }
-                    $('#detail_img_comments').html(comment_html);
-                    $('#modal_picture').modal('refresh');
-                    $('#detail_img_loader_2').hide();
-                    opening = false;
-                },
-                error: function (err) {
-                    console.log(err);
-                },
-                dataType: 'json'
-            });
-        }
-
-    });
+     });*/
 </script>
 </body>
 </html>
