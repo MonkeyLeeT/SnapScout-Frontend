@@ -9,7 +9,7 @@
                         <label class="header">Search: &nbsp;</label>
 
                         <div class="ui icon input">
-                            <input type="text" placeholder="Gucci Handbag" name="address" id="input_address">
+                            <input type="text" placeholder="Gucci Handbag" name="keywords" id="input_keywords">
                             <i class="search link icon" id="btn_search"></i>
                         </div>
                     </div>
@@ -17,14 +17,23 @@
             </div>
 
             <a class="active item">
-                <i class="camera retro icon"></i> Upload your snap for scouting:
-                <input type="file" name="photo" id="upload_photo">
+
+                <form enctype="multipart/form-data" action="/imagesearch" method="post">
+                    <i class="camera retro icon"></i> Upload your snap for scouting:
+                             <input type="submit" value="submit">
+                    <input name="file" type="file">
+
+                    {% csrf_token %}
+                </form>
             </a>
         </div>
-        <div id="right_content">
-        </div>
-        <div id='gallery'>
-            <ul id='gallery'></ul>
+
+
+        <div class="sixteen wide column centered" id='gallery'>
+            <ul id='gallery'><h4 class="ui horizontal header divider">
+                <i class="history icon"></i>
+                Past searches:
+            </h4></ul>
         </div>
 
     </div>
@@ -35,8 +44,12 @@
         src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDayRarZl_9rrBq09-O0P1brolBUOLRAoA&sensor=TRUE&libraries=visualization">
 </script>
 <script type="text/javascript">
+    var histories = {};
 
     $(document).ready(function () {
+        {% if login %}
+            showGallery({{ info.history |safe}});
+        {% endif %}
 
         $('.season').click(function () {
             $('.season').removeClass("active");
@@ -52,7 +65,7 @@
         });
 
         keywords.bind("enterKey", function (e) {
-            doSearch($(this).val());
+            searchImage($(this).val());
         });
 
         $('#btn_search').click(function () {
@@ -60,124 +73,128 @@
         });
 
     });
-    function loadPhoto(bound) {
-        var season = $('.season.active').html();
-        $.ajax({
-            type: 'GET',
-            url: 'getPhotos',
+    function searchImage(text) {
+        console.log(1234);
+        var loadedIndex = 1;
+        $('#detail_img_src2').attr('src', 'static/image/bag sample.png');
+        $('#similar_imgs').empty();
+        for (var i = 0; i < 7; i++) {
+            var img = document.createElement('img');
+            img.onload = function (e) {
+                img.onload = null;
+                setTimeout(function () {
+                    $(img).addClass('loaded');
+                }, 25 * loadedIndex++);
+            };
+            img.src = 'static/image/bag result' + (i + 1) + '.jpg';
+            img.width = '100%';
+            img.className = 'four wide column ui medium rounded image detail_img_similar_pic';
+            $('#similar_imgs').append(img);
+        }
+
+        // show first now
+        $('#modal_results')
+                .modal('show');
+        /*$.ajax({
+            type: 'POST',
+            url: 'http://127.0.0.1:8081/imagesearch',
+            xhr: function () {  // Custom XMLHttpRequest
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) { // Check if upload property exists
+                }
+                return myXhr;
+            },
             data: {
-                'season': season,
+                'additional': text,
+                'csrfmiddlewaretoken': token
             },
             success: function (data) {
                 console.log(data);
                 if (data.length > 0) {
-                    $('#right_content').html("");
-                    timeline = new Timeline($('#right_content'), data);
-                    $('#right_content').scrollTop(0);
-                    timeline.display();
+                    console.log(data);
                 } else {
                     $('#right_content').html("No photo in this area.");
                 }
-
-
             },
             error: function (err) {
                 console.log(err);
             },
             dataType: 'json'
         });
-    };
+        */
 
-    function doSearch(keywords) {
-        if (keywords == "")
-            keywords = "Handbag Gucci";
-        $.ajax({
-            type: 'GET',
-            url: 'searchPosition',
-            data: {
-                'additional': keywords
-            },
-            success: function (response) {
-                if (response.results.length > 0) {
-                    var center = response.results[0].geometry.location;
-                    var centerLatLng = new google.maps.LatLng(center.lat, center.lng);
-                    var bounds = new google.maps.LatLngBounds(centerLatLng, centerLatLng);
-                    var northeast = response.results[0].geometry.bounds.northeast;
-                    var neLatLng = new google.maps.LatLng(northeast.lat, northeast.lng);
-                    bounds.extend(neLatLng);
-                    var southwest = response.results[0].geometry.bounds.southwest;
-                    var swLatLng = new google.maps.LatLng(southwest.lat, southwest.lng);
-                    bounds.extend(swLatLng);
-                    map.fitBounds(bounds);
-                    loadPhoto(bounds);
-                }
-            },
-            error: function (err) {
-                console.log(err);
-            },
-            dataType: 'json'
-        });
     };
 
     //-------------------------------------------
     // Load history results
     //-------------------------------------------
-    !(function () {
+    function showGallery(history) {
         'use strict';
 
-        var gallery = $('#gallery'),
-                videos = [];
+        var gallery = $('#gallery');
+        var loadedIndex = 1, isVideo;
+        $.each(history, function (index, photo) {
+            isVideo = false;
+            var url = history[index]['url'],
+                    img = document.createElement('img');
+            //console.log(url)
+            $.ajax({
+                type: 'GET',
+                url: 'searchhistory',
+                data: {
+                    'base': url
+                },
+                success: function (data) {
+                    //console.log(data);
+                    if (data.length > 0) {
+                        histories[url] = data;
+                    } else {
+                        $('#right_content').html("No photo in this area.");
+                    }
 
-        // Get some photos from Flickr for the demo
-        $.ajax({
-            type: 'GET',
-            url: 'getPhotos',
-            data: {
-            },
-            dataType: 'json',
-        })
-                .done(function (data) {
-                    var loadedIndex = 1, isVideo;
 
-                    $.each(data, function (index, photo) {
-                        isVideo = false;
-                        // http://www.flickr.com/services/api/misc.urls.html
-                        var url = data[index],
-                                img = document.createElement('img');
-                        // lazy show the photos one by one
-                        img.onload = function (e) {
-                            img.onload = null;
-                            var link = document.createElement('a'),
-                                    li = document.createElement('li')
+                },
+                error: function (err) {
+                    console.log(err);
+                },
+                dataType: 'json'
+            });
+            // lazy show the photos one by one
+            img.onload = function (e) {
+                img.onload = null;
+                var link = document.createElement('a'),
+                        li = document.createElement('li')
 
-                            link.appendChild(this);
-                            if (isVideo) {
-                                link.rel = 'video';
-                                li.className = 'video'
-                            }
-                            $(link).addClass('history');
-                            li.appendChild(link);
-                            gallery[0].appendChild(li);
+                link.appendChild(this);
+                if (isVideo) {
+                    link.rel = 'video';
+                    li.className = 'video'
+                }
+                $(img).addClass('history');
+                li.appendChild(link);
+                gallery[0].appendChild(li);
 
-                            setTimeout(function () {
-                                $(li).addClass('loaded');
-                            }, 25 * loadedIndex++);
-                        };
+                setTimeout(function () {
+                    $(li).addClass('loaded');
+                }, 25 * loadedIndex++);
+            };
 
-                        img['largeUrl'] = isVideo ? photo.url : url;
-                        img['isVideo'] = isVideo;
-                        img.src = isVideo ? photo.thumb : url;
-                        img.title = index;
-                    });
-                    // finally, initialize photobox on all retrieved images
-                    //$('#gallery').photobox('a', {thumbs: true}, callback);
-                    // using setTimeout to make sure all images were in the DOM, before the history.load() function is looking them up to match the url hash
-                    setTimeout(window._photobox.history.load, 1000);
-                    function callback() {
-                        console.log('callback for loaded content:', this);
-                    };
-                });
-    })();
+            img['largeUrl'] = isVideo ? photo.url : url;
+            img['isVideo'] = isVideo;
+            img.src = url;
+            img.title = history[index]['id'];
+        });
+        // finally, initialize photobox on all retrieved images
+        //$('#gallery').photobox('a', {thumbs: true}, callback);
+        // using setTimeout to make sure all images were in the DOM, before the history.load() function is looking them up to match the url hash
+        setTimeout(window._photobox.history.load, 1000);
+        setTimeout(function () {
+            $(document).css('background-image', 'url("../image/background.jpg");');
+        }, 1200);
+        function callback() {
+            console.log('callback for loaded content:', this);
+        };
+    }
 </script>
 {% include "footer.html" %}
 

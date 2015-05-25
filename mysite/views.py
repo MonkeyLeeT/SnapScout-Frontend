@@ -1,6 +1,7 @@
 import urllib
 import urllib2
 import json
+import requests
 
 from django.http import HttpResponse
 from django.template import RequestContext
@@ -11,7 +12,6 @@ HOST_URL = "http://127.0.0.1:8081/"
 
 def index(request):
     username = request.session.get('username', None)
-    print username
     info = request.session
     if not username:
         c = RequestContext(request, {'login': False, 'index': True})
@@ -28,11 +28,11 @@ def signup(request):
     bio = request.POST['bio']
     signup_status = sendsignuprequest(email, password, confirm_password, username, bio)
     if "up" in signup_status['msg']:
-        login_status = sendsigninrequest(email, password)
-        if 'token' in login_status:
-            request.session['email'] = login_status['email']
-            request.session['token'] = login_status['token']
-            request.session['username'] = login_status['username']
+        login_status = sendsigninrequest(username, password)
+        print login_status
+        if True:
+            request.session['email'] = email
+            request.session['username'] = username
             response = {'type': True}
         else:
             response = {'type': False, 'title': "Error",
@@ -57,6 +57,8 @@ def signin(request):
         login_status = sendsigninrequest(username, password)
         if 'success' in login_status['msg']:
             request.session['username'] = username
+            request.session['history'] = json.dumps(login_status['history'])
+            #print request.session['history']
             response = {'type': True}
         else:
             response = {'type': False, 'title': "Error",
@@ -81,24 +83,23 @@ def sendsigninrequest(username, password):
     data = {'username': username, 'password': password}
     response_json = post(HOST_URL + "login", data)
     response = json.loads(response_json)
-    print response
     return response
 
 
-def getPhotos(request):
-    data = {}
-    #response_json = post(HOST_URL + "history", data)
-    response_json = {}
-    for i in range(16):
-        response_json[i] = "static/image/test image.jpg"
+def imagesearch(request):
+    addtext = ""
+    photo = request.FILES['file']
+    data = {'addtional': addtext, 'file': photo}
+    response_json = requests.post(HOST_URL + 'imagesearch', files={'file': open(photo, 'rb')})
+    print response_json
     return HttpResponse(json.dumps(response_json))
 
 
-def getSinglePhoto(request):
-    photoId = request.GET['photoId']
-    userId = request.session.get('userId', -1)
-    data = {'photoId': photoId, 'userId': userId}
-    response_json = post(HOST_URL + "SinglePhotoGetter", data)
+def searchhistory(request):
+    base = request.GET['base']
+    #print base
+    response_json = get(HOST_URL + "history" + "?base=" + base)
+    #print response_json
     return HttpResponse(response_json)
 
 
@@ -111,21 +112,8 @@ def post(url, data):
 
 
 def get(url):
+    #print url
     req = urllib2.Request(url)
     opener = urllib2.build_opener()
     response = opener.open(req)
     return response.read()
-
-
-def postRating(request):
-    email = request.session.get('email', None)
-    if not email:
-        response = {'success': False, 'error': "You should log in to make a comment."}
-        return HttpResponse(json.dumps(response))
-    else:
-        photoId = request.POST['photoId']
-        rating = request.POST['rating']
-        data = {'userId': request.session['userId'], 'photoId': photoId, 'rank': rating}
-        response_json = post(HOST_URL + "RatingPoster", data)
-        response = {'success': True, 'response': response_json}
-        return HttpResponse(json.dumps(response))

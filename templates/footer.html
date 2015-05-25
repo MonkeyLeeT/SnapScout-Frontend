@@ -95,11 +95,10 @@
             <a class="header">{{ info.username }}</a>
 
             <div class="meta">
-                <span class="date">Joined in 2014</span>
+                <span class="date">Joined in 2015</span>
             </div>
             <div class="description">
-                Stevie Feliciano is a library scientist living in New York City. She likes to spend her time reading,
-                running, and writing.
+                About me.
             </div>
         </div>
         <div class="extra content">
@@ -110,114 +109,144 @@
         </div>
     </div>
 </div>
-    <div class="ui modal" id="modal_results">
-        <i class="close icon"></i>
+<div class="ui modal" id="modal_past_results">
+    <i class="close icon"></i>
 
-        <div id="detail_img_loader_2">
-            <div class="ui active dimmer">
-                <div class="ui mini text loader">Loading</div>
+    <div id="detail_img_loader_2">
+        <div class="ui active dimmer">
+            <div class="ui mini text loader">Loading</div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="ui grid">
+
+            <div class="four wide column">
+                <img width="100%" src="static/image/test image.jpg" id="detail_img_src">
+
+                <div id="detail_img_rating"></div>
+            </div>
+            <div class="twelve wide column">
+                <h3 class="ui dividing header">Past matches:</h3>
+
+                <div class="ui grid" id="past_similar_imgs">
+
+                </div>
             </div>
         </div>
-        <div class="content">
-            <div class="ui grid">
+    </div>
+</div>
+<div class="ui modal" id="modal_results">
+    <i class="close icon"></i>
 
-                <div class="four wide column">
-                    <img width="100%" src="static/image/test image.jpg" id="detail_img_src">
+    <div id="detail_img_loader_2">
+        <div class="ui active dimmer">
+            <div class="ui mini text loader">Loading</div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="ui grid">
 
-                    <div id="detail_img_rating"></div>
+            <div class="four wide column">
+                <img width="100%" src="static/image/test image.jpg" id="detail_img_src2">
+
+                <div id="detail_img_rating"></div>
+            </div>
+            <div class="twelve wide column">
+                <h3 class="ui dividing header">Recent matches:</h3>
+
+                <div class="ui grid" id="similar_imgs">
+
                 </div>
-                <div class="six wide column">
-                    <h3 class="ui dividing header">Possible matches:</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui modal" id="modal_picture">
+    <i class="close icon"></i>
 
-                    <div class="ui grid">
-                        <div class="four wide column"><img width="100%"
-                                                           class="ui medium rounded image detail_img_similar_pic"
-                                                           photoid="0"
-                                                           src="static/image/test image.jpg"
-                                                           id="detail_img_similar_0">
+    <div id="detail_img_loader_2">
+        <div class="ui active dimmer">
+            <div class="ui mini text loader">Loading</div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="ui grid">
+
+            <div class="ten wide column">
+                <img width="100%" height="100%" src="static/image/bag result3.jpg" id="result_image">
+
+                <div class="two fluid ui inverted icon buttons">
+                    <div class="ui blue basic button" id="like">
+                        <i class="pointing right large icon"></i>
+                    </div>
+                    <div class="ui green basic  button" id="shop">
+                        <i class="shop large icon"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="six wide column">
+
+                <div class="ui grid">
+                    <div class="sixteen wide column">
+                        <h6 class="ui dividing header">Title</h6>
+
+                        <div id="detail_img_description">
+                            Saffiano Medium Double Zip Top-Handle Bag
+                        </div>
+                        <h5 class="ui dividing header">Content</h5>
+
+                        <div id="detail_img_description">
+                            A roomy design in luxurious Saffiano leather with a versatile, detachable strap.
+
+Double top handles, 5" drop
+Detachable shoulder strap, 22"-24" drop
+Three compartments, one open and two zip closures
+Protective metal feet
+Snap gussets
+One inside zip pocket
+Two inside open pockets
+Logo lining
+13"W X 9.5"H X 5.5"D
+Leather
+Made in Italy
+                        </div>
+                        <h4 class="ui dividing header">Original Link</h4>
+                        <h3 class="ui dividing header">Brands</h3>
+
+                        <div id="detail_img_description">
+                            Prada
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="ui small modal" id="modal_picture">
-        <i class="close icon"></i>
-
-        <div id="detail_img_loader_2">
-            <div class="ui active dimmer">
-                <div class="ui mini text loader">Loading</div>
-            </div>
-        </div>
-        <div class="content">
-            <div class="ui grid">
-
-                <div class="seven wide column">
-                    <img width="100%" src="static/image/test image.jpg" id="detail_img_src">
-                        <div class="two fluid ui inverted icon buttons">
-                            <div class="ui blue basic button" id="like">
-                                <i class="pointing right large icon"></i>
-                            </div>
-                            <div class="ui green basic  button" id="shop">
-                                <i class="shop large icon"></i>
-                            </div>
-                        </div>
-                </div>
-                <div class="six wide column">
-
-                    <div class="ui grid">
-                        <div class="sixteen wide column">
-
-                            <h3 class="ui dividing header">Brands</h3>
-
-
-                            <div id="detail_img_description">
-                                Description of brands
-                            </div>
-                        </div>
-                        <div class="sixteen wide column">
-                            <h3 class="ui dividing header">Comments</h3>
-
-                            <div class="ui comments">
-
-                                <div id="detail_img_comments">
-                                    <div class="comment">
-                                        <a class="avatar">
-                                            <img src="static/image/test image.jpg">
-                                        </a>
-
-                                        <div class="content">
-                                            <a class="author">Ted</a>
-
-                                            <div class="metadata">
-                                                <span class="date">Today at 5:30PM</span>
-                                            </div>
-                                            <div class="text">
-                                                Very fashion, wow!
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
 <script type="text/javascript">
 
     $(document).on("click", ".history", function () {
-        // attach events to buttons
-        $('#modal_picture')
-                .modal({
-                    closable: false,
-                })
-                .modal('attach events', '.detail_img_similar_pic')
-        ;
+        var loadedIndex = 1;
+        var base = $(this).attr('src');
+        console.log(histories[base]);
+        $('#detail_img_src').attr('src', base);
+        $('#past_similar_imgs').empty();
+        for (var i = 0; i < histories[base].length; i++) {
+            var item = histories[base][i];
+            var img = document.createElement('img');
+            img.onload = function (e) {
+                img.onload = null;
+                setTimeout(function () {
+                    $(img).addClass('loaded');
+                }, 25 * loadedIndex++);
+            };
+            img.src = item.url;
+            img.width = '100%';
+            img.className = 'four wide column ui medium rounded image past_detail_img_similar_pic';
+            $('#past_similar_imgs').append(img);
+        }
+
         // show first now
-        $('#modal_results')
+        $('#modal_past_results')
                 .modal({
                     allowMultiple: true
                 })
@@ -232,7 +261,7 @@
             });
 
     $('#shop').click(function () {
-        window.open('http://www.google.com');
+        window.open('http://www.saksfifthavenue.com/main/ProductDetail.jsp?PRODUCT%3C%3Eprd_id=845524446593079');
     });
 
     $('#like').click(function () {
@@ -270,7 +299,7 @@
             type: 'GET',
             url: 'signin?action=logout',
             success: function (response) {
-                console.log(response);
+                //console.log(response);
                 location.reload();
             },
             error: function (err) {
@@ -422,35 +451,39 @@
             });
 
     var opening = true;
-    /*$('.detail_img_similar_pic').click(function () {
-     var id = $(this).attr('photoid');
-     if (opening == false) {
-     $.ajax({
-     type: 'GET',
-     url: 'getSinglePhoto',
-     data: {
-     'photoId': id
-     },
-     beforeSend: function (s) {
-     $('#detail_img_loader_2').show();
-     },
-     success: function (data) {
-     $('#detail_img_src').attr('src', data.url);
-     $('#detail_img_description').html(data.content);
-     $('#comment_text').val('');
-     $('#comment_img_id').val(id);
-     $('#modal_results').modal('refresh');
-     $('#detail_img_loader_2').hide();
-     opening = false;
-     },
-     error: function (err) {
-     console.log(err);
-     },
-     dataType: 'json'
-     });
-     }
-
-     });*/
+    $(document).on("click", ".detail_img_similar_pic", function () {
+        var id;
+        // attach events to buttons
+        $('#modal_picture')
+                .modal({
+                    closable: false,
+                })
+                .modal('attach events', '.detail_img_similar_pic')
+        ;
+        if (opening == false) {
+            $.ajax({
+                type: 'GET',
+                url: 'getSinglePhoto',
+                data: {
+                    'photoId': id
+                },
+                beforeSend: function (s) {
+                    $('#detail_img_loader_2').show();
+                },
+                success: function (data) {
+                    $('#detail_img_src').attr('src', data.url);
+                    $('#detail_img_description').html(data.content);
+                    $('#modal_past_results').modal('refresh');
+                    $('#detail_img_loader_2').hide();
+                    opening = false;
+                },
+                error: function (err) {
+                    console.log(err);
+                },
+                dataType: 'json'
+            });
+        }
+    });
 </script>
 </body>
 </html>

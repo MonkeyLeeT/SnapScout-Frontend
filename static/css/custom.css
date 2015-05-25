@@ -1,25 +1,9 @@
 body {
-    background-image: url("../image/background.jpg");
+    background: url(../image/background.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-}
-
-#map_canvas {
-    height: 95%;
-}
-
-#right_content {
-    height: 80%;
-    overflow: auto;
-    overflow-x: hidden;
-}
-
-#comments {
-    height: 350px;
-    overflow: auto;
-    overflow-x: hidden;
 }
 
 #detail_img_loader {
@@ -40,8 +24,4 @@ body {
 
 .img_overlay {
     cursor: pointer;
-}
-
-#recommendation_loading {
-    height: 400px;
 }
