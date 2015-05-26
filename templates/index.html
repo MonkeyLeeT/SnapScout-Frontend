@@ -18,12 +18,11 @@
 
             <a class="active item">
 
-                <form enctype="multipart/form-data" action="/imagesearch" method="post">
-                    <i class="camera retro icon"></i> Upload your snap for scouting:
-                             <input type="submit" value="submit">
-                    <input name="file" type="file">
-
+                <form enctype="multipart/form-data">
                     {% csrf_token %}
+                    <i class="camera retro icon"></i> Upload your snap for scouting:
+                    <input name="file" type="file" id="uploaded">
+
                 </form>
             </a>
         </div>
@@ -45,6 +44,13 @@
 </script>
 <script type="text/javascript">
     var histories = {};
+    var results = [];
+    var uploaded = '';
+    var user = {}, friends = [];
+        {% if login %}
+            user = {{ info.user |safe }};
+            friends = {{ info.friendship |safe }};
+        {% endif %}
 
     $(document).ready(function () {
         {% if login %}
@@ -74,56 +80,90 @@
 
     });
     function searchImage(text) {
-        console.log(1234);
+        /*var loadedIndex = 1;
+         $('#detail_img_src2').attr('src', 'static/image/bag sample.png');
+         $('#similar_imgs').empty();
+         for (var i = 0; i < 7; i++) {
+         var img = document.createElement('img');
+         img.onload = function (e) {
+         img.onload = null;
+         setTimeout(function () {
+         $(img).addClass('loaded');
+         }, 25 * loadedIndex++);
+         };
+         img.src = 'static/image/bag result' + (i + 1) + '.jpg';
+         img.width = '100%';
+         img.className = 'four wide column ui medium rounded image detail_img_similar_pic';
+         $('#similar_imgs').append(img);
+         }*/
         var loadedIndex = 1;
-        $('#detail_img_src2').attr('src', 'static/image/bag sample.png');
-        $('#similar_imgs').empty();
-        for (var i = 0; i < 7; i++) {
-            var img = document.createElement('img');
-            img.onload = function (e) {
-                img.onload = null;
-                setTimeout(function () {
-                    $(img).addClass('loaded');
-                }, 25 * loadedIndex++);
-            };
-            img.src = 'static/image/bag result' + (i + 1) + '.jpg';
-            img.width = '100%';
-            img.className = 'four wide column ui medium rounded image detail_img_similar_pic';
-            $('#similar_imgs').append(img);
+        var formData = new FormData($('form')[0]);
+        formData.append('additional', text);
+        var uploaded_new = $('#uploaded').val().replace(/^.*\\/, "");
+        if (uploaded != uploaded_new) {
+            uploaded = uploaded_new;
+            $.ajax({
+                type: 'POST',
+                url: 'imagesearch',
+                xhr: function () {  // Custom XMLHttpRequest
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) { // Check if upload property exists
+                    }
+                    return myXhr;
+                },
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    //console.log(data);
+                    if (data.length > 0) {
+
+                        $('#detail_img_src2').attr('src', '/static/uploads/' + uploaded);
+                        $('#similar_imgs').empty();
+                        for (var i = 0; i < data.length; i++) {
+                            var img = document.createElement('img');
+                            img.onload = function (e) {
+                                img.onload = null;
+                                setTimeout(function () {
+                                    $(img).addClass('loaded');
+                                }, 25 * loadedIndex++);
+                            };
+                            img.src = data[i].url;
+                            img.width = '100%';
+                            img.title = i;
+                            results[i] = data[i];
+                            img.className = 'four wide column ui medium rounded image detail_img_similar_pic';
+                            $('#similar_imgs').append(img);
+                        }
+                        $('#modal_picture')
+                                .modal({
+                                    allowMultiple: true,
+                                    closable: true
+                                })
+                                .modal('attach events', '.detail_img_similar_pic');
+
+                        // show first now
+                        $('#modal_results')
+                                .modal({
+                                    closable: false
+                                })
+                                .modal('show');
+                    } else {
+                        $('#right_content').html("No photo in this area.");
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                },
+                dataType: 'json'
+            });
+
+        } else {
+            $('#modal_results').modal('show');
         }
-
-        // show first now
-        $('#modal_results')
-                .modal('show');
-        /*$.ajax({
-            type: 'POST',
-            url: 'http://127.0.0.1:8081/imagesearch',
-            xhr: function () {  // Custom XMLHttpRequest
-                var myXhr = $.ajaxSettings.xhr();
-                if (myXhr.upload) { // Check if upload property exists
-                }
-                return myXhr;
-            },
-            data: {
-                'additional': text,
-                'csrfmiddlewaretoken': token
-            },
-            success: function (data) {
-                console.log(data);
-                if (data.length > 0) {
-                    console.log(data);
-                } else {
-                    $('#right_content').html("No photo in this area.");
-                }
-            },
-            error: function (err) {
-                console.log(err);
-            },
-            dataType: 'json'
-        });
-        */
-
-    };
+    }
+    ;
 
     //-------------------------------------------
     // Load history results

@@ -92,20 +92,16 @@
             <img src="static/image/test image.jpg">
         </div>
         <div class="content">
-            <a class="header">{{ info.username }}</a>
+            <a class="header" id="username"></a>
 
             <div class="meta">
-                <span class="date">Joined in 2015</span>
+                <span class="date" id="startdate"></span>
             </div>
-            <div class="description">
-                About me.
+            <div class="description" id="bio">
             </div>
         </div>
-        <div class="extra content">
-            <a>
-                <i class="user icon"></i>
-                22 Friends
-            </a>
+        <div class="extra content" id="friends">
+            <a><i class="user icon"></i></a>
         </div>
     </div>
 </div>
@@ -173,7 +169,7 @@
         <div class="ui grid">
 
             <div class="ten wide column">
-                <img width="100%" height="100%" src="static/image/bag result3.jpg" id="result_image">
+                <img width="100%" height="100%" id="result_image">
 
                 <div class="two fluid ui inverted icon buttons">
                     <div class="ui blue basic button" id="like">
@@ -188,34 +184,38 @@
 
                 <div class="ui grid">
                     <div class="sixteen wide column">
-                        <h6 class="ui dividing header">Title</h6>
+                        <h2 class="ui dividing header">Brands</h3>
 
-                        <div id="detail_img_description">
-                            Saffiano Medium Double Zip Top-Handle Bag
-                        </div>
-                        <h5 class="ui dividing header">Content</h5>
+                            <div id="detail_img_brands">
+                                Prada
+                            </div>
+                            <h4 class="ui dividing header">Title</h6>
 
-                        <div id="detail_img_description">
-                            A roomy design in luxurious Saffiano leather with a versatile, detachable strap.
+                                <div id="detail_img_title">
+                                    Saffiano Medium Double Zip Top-Handle Bag
+                                </div>
+                                <h4 class="ui dividing header">Content</h5>
 
-Double top handles, 5" drop
-Detachable shoulder strap, 22"-24" drop
-Three compartments, one open and two zip closures
-Protective metal feet
-Snap gussets
-One inside zip pocket
-Two inside open pockets
-Logo lining
-13"W X 9.5"H X 5.5"D
-Leather
-Made in Italy
-                        </div>
-                        <h4 class="ui dividing header">Original Link</h4>
-                        <h3 class="ui dividing header">Brands</h3>
+                                    <div id="detail_img_content">
+                                        A roomy design in luxurious Saffiano leather with a versatile, detachable strap.
 
-                        <div id="detail_img_description">
-                            Prada
-                        </div>
+                                        Double top handles, 5" drop
+                                        Detachable shoulder strap, 22"-24" drop
+                                        Three compartments, one open and two zip closures
+                                        Protective metal feet
+                                        Snap gussets
+                                        One inside zip pocket
+                                        Two inside open pockets
+                                        Logo lining
+                                        13"W X 9.5"H X 5.5"D
+                                        Leather
+                                        Made in Italy
+                                    </div>
+                                    <h4 class="ui dividing header">Link</h3>
+
+                                        <div id="detail_img_originlink">
+                                            Prada
+                                        </div>
                     </div>
                 </div>
             </div>
@@ -253,16 +253,20 @@ Made in Italy
                 .modal('show')
         ;
     });
-
+    if (user.name) {
+        $('#username').html(user.name);
+        $('#startdate').html('Joined Snap Scout: ' + user.start_time);
+        $('#bio').html('About me:<br>' +user.bio);
+        if (friends.length > 0)
+            $('#friends').append(friends.length + ' Friends');
+        else
+            $('#friends').append('Lonely Wolf');
+    }
     $('#btn_profile')
             .popup({
                 popup: $('.popup'),
                 on: 'click'
             });
-
-    $('#shop').click(function () {
-        window.open('http://www.saksfifthavenue.com/main/ProductDetail.jsp?PRODUCT%3C%3Eprd_id=845524446593079');
-    });
 
     $('#like').click(function () {
         console.log('clicked like');
@@ -346,8 +350,11 @@ Made in Italy
                         },
                         success: function (response) {
                             console.log(response);
+                            user = response.user;
+                            console.log(user);
                             if (response.type == true) {
                                 $('.small.modal').modal('hide');
+                                response
                                 location.reload();
                             } else {
                                 console.log("f");
@@ -428,7 +435,7 @@ Made in Italy
                             'csrfmiddlewaretoken': token
                         },
                         success: function (response) {
-                            console.log(response);
+                            //console.log(response);
                             if (response.type == true) {
                                 $('.small.modal').modal('hide');
                                 location.reload();
@@ -452,37 +459,16 @@ Made in Italy
 
     var opening = true;
     $(document).on("click", ".detail_img_similar_pic", function () {
-        var id;
-        // attach events to buttons
-        $('#modal_picture')
-                .modal({
-                    closable: false,
-                })
-                .modal('attach events', '.detail_img_similar_pic')
-        ;
-        if (opening == false) {
-            $.ajax({
-                type: 'GET',
-                url: 'getSinglePhoto',
-                data: {
-                    'photoId': id
-                },
-                beforeSend: function (s) {
-                    $('#detail_img_loader_2').show();
-                },
-                success: function (data) {
-                    $('#detail_img_src').attr('src', data.url);
-                    $('#detail_img_description').html(data.content);
-                    $('#modal_past_results').modal('refresh');
-                    $('#detail_img_loader_2').hide();
-                    opening = false;
-                },
-                error: function (err) {
-                    console.log(err);
-                },
-                dataType: 'json'
-            });
-        }
+        var result = results[$(this).attr('title')];
+
+        $('#detail_img_title').html(result.title);
+        $('#detail_img_content').html(result.content);
+        $('#detail_img_originlink').html(result.origin);
+        $('#detail_img_brands').html(result.brands);
+        $('#result_image').attr('src', result.url);
+        $('#shop').click(function () {
+            window.open(result.origin);
+        });
     });
 </script>
 </body>

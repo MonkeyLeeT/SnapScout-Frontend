@@ -57,6 +57,9 @@ def signin(request):
         login_status = sendsigninrequest(username, password)
         if 'success' in login_status['msg']:
             request.session['username'] = username
+            request.session['user'] = json.dumps(login_status['user'])
+            request.session['friendship'] = json.dumps(login_status['friendship'])
+            print request.session['friendship']
             request.session['history'] = json.dumps(login_status['history'])
             #print request.session['history']
             response = {'type': True}
@@ -87,12 +90,17 @@ def sendsigninrequest(username, password):
 
 
 def imagesearch(request):
-    addtext = ""
     photo = request.FILES['file']
-    data = {'addtional': addtext, 'file': photo}
-    response_json = requests.post(HOST_URL + 'imagesearch', files={'file': open(photo, 'rb')})
-    print response_json
-    return HttpResponse(json.dumps(response_json))
+    addtext = request.POST['additional']
+    photoname = 'static/uploads/' + photo.name
+    with open(photoname, 'wb+') as destination:
+        for chunk in photo.chunks():
+            destination.write(chunk)
+    files = [('file', (photoname, open(photoname, 'rb'), 'image/' + photo.name.split('.')[1])),
+             ('additional', addtext)]
+    response_json = requests.post(HOST_URL + 'imagesearch', files=files)
+    #print response_json.json()
+    return HttpResponse(json.dumps(response_json.json()))
 
 
 def searchhistory(request):
