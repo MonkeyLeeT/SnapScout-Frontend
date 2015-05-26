@@ -2,6 +2,7 @@ import urllib
 import urllib2
 import json
 import requests
+import hashlib
 
 from django.http import HttpResponse
 from django.template import RequestContext
@@ -31,8 +32,13 @@ def signup(request):
         login_status = sendsigninrequest(username, password)
         print login_status
         if True:
-            request.session['email'] = email
             request.session['username'] = username
+            user = json.dumps(login_status['user'])
+            user['password'] = hashlib.md5(user['password']).hexdigest()
+            request.session['user'] = user
+            request.session['friendship'] = json.dumps(login_status['friendship'])
+           # print request.session['friendship']
+            request.session['history'] = json.dumps(login_status['history'])
             response = {'type': True}
         else:
             response = {'type': False, 'title': "Error",
@@ -57,9 +63,11 @@ def signin(request):
         login_status = sendsigninrequest(username, password)
         if 'success' in login_status['msg']:
             request.session['username'] = username
-            request.session['user'] = json.dumps(login_status['user'])
+            user = login_status['user']
+            print user['password']
+            user['password'] = str(hashlib.md5(user['password']).hexdigest())
+            request.session['user'] = json.dumps(user)
             request.session['friendship'] = json.dumps(login_status['friendship'])
-            print request.session['friendship']
             request.session['history'] = json.dumps(login_status['history'])
             #print request.session['history']
             response = {'type': True}
